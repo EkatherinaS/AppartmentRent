@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication
 public class ServerApplication {
 
-
 	public static ApplicationContext applicationContext;
 
 	@Bean
@@ -31,8 +30,8 @@ public class ServerApplication {
 
 	public static void main(String[] args) {
 		applicationContext = SpringApplication.run(ServerApplication.class, args);
-		//EtagiParser parser = new EtagiParser();
-		//parser.parse();
+		EtagiParser parser = new EtagiParser();
+		parser.parse();
 		//applicationContext.getBean(WebDriver.class).close();
 	}
 

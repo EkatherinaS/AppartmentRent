@@ -1,5 +1,7 @@
 package com.rentappartment.server.model.Image;
 
+import com.rentappartment.server.model.Offer.Offer;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -33,5 +35,11 @@ public class ImageDao {
 
     public Image findById(String id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public List<Image> getOfferImages(int id) {
+        List<Image> list = new ArrayList<>();
+        Streamable.of(repository.findAll()).filter(image -> image.getOffer().getId() == id).forEach(list::add);
+        return list;
     }
 }

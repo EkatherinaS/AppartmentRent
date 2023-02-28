@@ -38,6 +38,9 @@ public class Offer {
     @Column(name = "favorite", nullable = false)
     private Boolean favorite = false;
 
+    @Column(name = "main_image")
+    private String mainImage;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
@@ -60,6 +63,14 @@ public class Offer {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
     }
 
     public Boolean getFavorite() {

@@ -51,7 +51,7 @@ public class EtagiParser extends parserClass {
     private static final String imagesButtonXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div/div/div/div/div[2]/button";
     private static final String imagePatternXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div[2]/div/div/div[1]/div[2]/div[1]/div/div[%s]/div/div/div/div[1]/div/div/img";
     private static final String nextImageButtonXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div[2]/div/div/div[1]/div[2]/button[2]";
-
+    private static final String prevImageButtonXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div[2]/div/div/div[1]/div[2]/button[1]";
     private static final String addressClass = "div.Vs6MQ";
     private static final String pagesNumberClass = "x0SgG Q7VHf";
 
@@ -68,7 +68,7 @@ public class EtagiParser extends parserClass {
         Elements flatUrlList;
 
         //Get number of pages on website
-        etagiLogger.trace("Fetching " + url + "...");
+        etagiLogger.info("Fetching " + url + "...");
         doc = documentFromUrl(url);
         int pageNumber = getNumberOfPages();
 
@@ -79,7 +79,7 @@ public class EtagiParser extends parserClass {
         for (int i = 1; i <= pageNumber; i++) {
             pageUrl = url + "?page=" + i;
 
-            etagiLogger.trace("Fetching " + pageUrl + "...");
+            etagiLogger.info("Fetching " + pageUrl + "...");
             doc = documentFromUrl(pageUrl);
 
             flatUrlList = doc.select("a[href*=/realty_rent/]");
@@ -124,7 +124,7 @@ public class EtagiParser extends parserClass {
         String imageXpath;
         String imageUrl;
 
-        etagiLogger.trace("Fetching " + url + "...");
+        etagiLogger.info("Fetching " + url + "...");
         doc = documentFromUrl(url, xpathButtons);
 
         //Get data from website
@@ -176,24 +176,26 @@ public class EtagiParser extends parserClass {
         imageNumber = getIntegerFromString(getStringValue(getTextFromXpath(imagesButtonXpath)));
         doc = documentFromUrl(url, xpathImageButton);
         if (imageNumber.size() > 0) {
-            for (int i = 1; i <= imageNumber.get(0); i++) {
+            Image image = new Image();
+            for (int i = imageNumber.get(0); i > 0; i--) {
                 doc = getNextImagePage();
                 imageXpath = String.format(imagePatternXpath, i);
                 imageUrl = getStringValue(getAttrFromXpath(imageXpath, "src"));
                 if (!Objects.equals(imageUrl, defaultString)) {
-                    Image image = new Image();
                     image.setImageUrl(imageUrl);
                     image.setOffer(offer);
                     applicationContext.getBean(ImageDao.class).save(image);
                 }
             }
+            offer.setMainImage(image.getImageUrl());
+            applicationContext.getBean(OfferDao.class).save(offer);
         }
     }
 
 
     private Document getNextImagePage() {
         try {
-            applicationContext.getBean(WebDriver.class).findElement(By.xpath(nextImageButtonXpath)).click();
+            applicationContext.getBean(WebDriver.class).findElement(By.xpath(prevImageButtonXpath)).click();
         }
         catch (Exception exception) {
             etagiLogger.error("Next image button not found...");

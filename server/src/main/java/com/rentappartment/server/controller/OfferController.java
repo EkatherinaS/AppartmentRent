@@ -23,4 +23,19 @@ public class OfferController {
     public List<Offer> getFavoriteOffers() {
         return offerDao.getFavoriteOffers();
     }
+
+    @GetMapping("/offer/get-filtered")
+    public List<Offer> getFilteredOffers(boolean flat, boolean room,
+                                         int priceMin, int priceMax,
+                                         int roomNumberMin, int roomNumberMax,
+                                         int areaMin, int areaMax,
+                                         int kitchenMin, int kitchenMax,
+                                         int yearMin, int yearMax,
+                                         int floorMin, int floorMax,
+                                         int floorNumberMin, int floorNumberMax) {
+        return offerDao.getFilteredOffers(flat, room, priceMin, priceMax,
+                roomNumberMin, roomNumberMax, areaMin, areaMax,
+                kitchenMin, kitchenMax, yearMin, yearMax,
+                floorMin, floorMax, floorNumberMin, floorNumberMax);
+    }
 }
