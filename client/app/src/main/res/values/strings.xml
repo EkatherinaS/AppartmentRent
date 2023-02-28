@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Аренда жилья Пермь</string>
+
+    <string name="favorites">Избранное</string>
+    <string name="filters">Фильтры</string>
+    <string name="sort">Настройки сортировки</string>
+    <string name="home">Главная страница</string>
+    <string name="location">Местоположение</string>
+
+
+</resources>
