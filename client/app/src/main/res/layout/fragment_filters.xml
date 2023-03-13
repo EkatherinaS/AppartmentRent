@@ -1,26 +1,380 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FiltersFragment">
-
-    <TableRow
+    tools:context=".FiltersFragment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    android:layout_weight="1">
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:shrinkColumns="1, 2"
+        android:stretchColumns="0">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/tvTypeOffer"
+                android:text="@string/tvTypePlace"
+                style="@style/HeaderTextView">
+            </TextView>
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <CheckBox
+                    android:id="@+id/cbTypeFlat"
+                    android:text="@string/tvTypeFlat"
+                    style="@style/NormalCheckbox"/>
+                <CheckBox
+                    android:id="@+id/cbTypeRoom"
+                    android:text="@string/tvTypeRoom"
+                    style="@style/NormalCheckbox" />
+            </LinearLayout>
+        </TableRow>
 
-</TableLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:text="@string/tvPrice"
+                android:layout_gravity="center_vertical"
+                style="@style/HeaderTextView" />
+
+            <TextView
+                android:id="@+id/tvPriceMin"
+                android:text="@string/tvMin"
+                style="@style/NormalTextView"/>
+
+            <TextView
+                android:id="@+id/tvPriceMax"
+                android:text="@string/tvMax"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etPriceMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etPriceMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvRoomNumber"
+                android:text="@string/tvRoomNumber"
+                style="@style/HeaderTextView">
+            </TextView>
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:text="@string/tvTypeStudio"
+                style="@style/NormalCheckbox"
+                android:layout_weight="1"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvRoomNumberMin"
+                style="@style/NormalTextView"
+                android:layout_width="40dp"
+                android:layout_column="1"
+                android:text="@string/tvMin" />
+
+            <TextView
+                android:id="@+id/tvRoomNumberMax"
+                android:text="@string/tvMax"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etRoomNumberMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etRoomNumberMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvSpace"
+                android:text="@string/tvSpace"
+                style="@style/HeaderTextView" />
+
+            <TextView
+                android:id="@+id/tvMinSpace"
+                android:text="@string/tvMinSpace"
+                style="@style/NormalTextView"/>
+
+            <TextView
+                android:id="@+id/tvMaxSpace"
+                android:text="@string/tvMaxSpace"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etSpaceMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etSpaceMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvKitchenSpace"
+                android:text="@string/tvKitchenSpace"
+                style="@style/HeaderTextView" />
+
+            <TextView
+                android:id="@+id/tvMinKitchenSpace"
+                android:text="@string/tvMinSpace"
+                style="@style/NormalTextView"/>
+
+            <TextView
+                android:id="@+id/tvMaxKitchenSpace"
+                android:text="@string/tvMaxSpace"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etKitchenSpaceMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etKitchenSpaceMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvYear"
+                android:text="@string/tvYear"
+                android:layout_gravity="center_vertical"
+                style="@style/HeaderTextView" />
+
+            <TextView
+                android:id="@+id/tvYearMin"
+                android:text="@string/tvMin"
+                style="@style/NormalTextView"/>
+
+            <TextView
+                android:id="@+id/tvYearMax"
+                android:text="@string/tvMax"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etYearMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etYearMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvFloor"
+                android:text="@string/tvFloor"
+                android:layout_gravity="center_vertical"
+                style="@style/HeaderTextView" />
+
+            <TextView
+                android:id="@+id/tvFloorMin"
+                android:text="@string/tvMin"
+                style="@style/NormalTextView"/>
+
+            <TextView
+                android:id="@+id/tvFloorMax"
+                android:text="@string/tvMax"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etFloorMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etFloorMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvFloorNumber"
+                android:text="@string/tvFloorNumber"
+                android:layout_gravity="center_vertical"
+                style="@style/HeaderTextView" />
+
+            <TextView
+                android:id="@+id/tvFloorNumberMin"
+                android:text="@string/tvMin"
+                style="@style/NormalTextView"/>
+
+            <TextView
+                android:id="@+id/tvFloorNumberMax"
+                android:text="@string/tvMax"
+                style="@style/NormalTextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etFloorNumberMin"
+                style="@style/NormalEditText"
+                android:layout_column="1"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/etFloorNumberMax"
+                style="@style/NormalEditText"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvWebsite"
+                android:text="@string/tvWebsite"
+                style="@style/HeaderTextView">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <CheckBox
+                    android:id="@+id/cbWebsiteEtagi"
+                    android:text="@string/cbWebsiteEtagi"
+                    style="@style/NormalCheckbox"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"/>
+                <CheckBox
+                    android:id="@+id/cbWebsiteN1"
+                    android:text="@string/cbWebsiteN1"
+                    style="@style/NormalCheckbox"
+                    android:layout_weight="1"
+                    android:layout_column="1" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+</ScrollView>

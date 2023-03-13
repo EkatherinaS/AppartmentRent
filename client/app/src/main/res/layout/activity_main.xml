@@ -22,7 +22,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/home"
-                app:navigationIcon="@drawable/ic_back_foreground"/>
+                app:navigationIcon="@drawable/ic_toolbar_back"/>
 
             <ImageView
                 android:id="@+id/sort_button"
@@ -30,7 +30,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/toolbar"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/sort_icon_foreground" />
+                app:srcCompat="@drawable/ic_toolbar_sort" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -50,10 +50,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"
+        app:menu="@menu/bottom_navigation_menu"
         app:backgroundTint="@color/colorPrimary"
         app:itemIconSize="48dp"
         app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/selector"/>
+        app:itemIconTint="@drawable/selector_navigation_menu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

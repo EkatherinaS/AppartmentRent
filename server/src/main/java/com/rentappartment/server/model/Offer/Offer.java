@@ -35,9 +35,6 @@ public class Offer {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "favorite", nullable = false)
-    private Boolean favorite = false;
-
     @Column(name = "main_image")
     private String mainImage;
 
@@ -71,14 +68,6 @@ public class Offer {
 
     public void setMainImage(String mainImage) {
         this.mainImage = mainImage;
-    }
-
-    public Boolean getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
     }
 
     public Double getPrice() {

@@ -20,7 +20,7 @@ public class ImageController {
     }
 
     @GetMapping("/image/get-by-offer")
-    public List<Image> getOfferImages(@RequestParam int id) {
-        return imageDao.getOfferImages(id);
+    public List<Image> getOfferImages(@RequestParam(name="offerId") int offerId) {
+        return imageDao.getOfferImages(offerId);
     }
 }

@@ -7,5 +7,44 @@
     <string name="home">Главная страница</string>
     <string name="location">Местоположение</string>
 
+    <string name="tvTypePlace">Тип помещения</string>
+    <string name="tvPrice">Стоимость</string>
+    <string name="tvRoomNumber">Количество комнат</string>
+    <string name="tvSpace">Общая площадь</string>
+    <string name="tvKitchenSpace">Площадь кухни</string>
+    <string name="tvYear">Год постройки</string>
+    <string name="tvFloor">Этаж</string>
+    <string name="tvFloorNumber">Количество этажей</string>
+    <string name="tvWebsite">Сайты для сбора\nинформации</string>
 
+    <string name="tvTypeRoom">Комната</string>
+    <string name="tvTypeFlat">Квартира</string>
+    <string name="tvTypeStudio">Студия</string>
+    <string name="tvMin">Мин.</string>
+    <string name="tvMax">Макс.</string>
+    <string name="tvMinSpace">Мин. м2</string>
+    <string name="tvMaxSpace">Макс. м2</string>
+    <string name="cbWebsiteN1">n1</string>
+    <string name="cbWebsiteEtagi">Etagi</string>
+
+    <string name="tvDescription">Описание предложения</string>
+    <string name="tvContacts">Контактные данные:</string>
+    <string name="tvContactsName">ФИО</string>
+    <string name="tvContactsPhone">+7(000)000-00-00</string>
+
+    <string name="emptyString"></string>
+
+    <string name="defaultOfferHeader">Предложение не найдено</string>
+    <string name="defaultAddress">р-н не не найден,\nадрес не найден</string>
+    <string name="defaultPrice">цена не найдена</string>
+
+    <string name="placeRadius">Радиус: </string>
+    <string name="placeCentralSpot">Центральная точка:</string>
+    <string name="placeAddress">Адрес</string>
+
+    <string name="sortPriority">Приоритет фильтров</string>
+    <string name="sortChooseFilters">Выбрать фильтры</string>
+    <string name="sortFilter">Фильтр</string>
+
+    <string name="defaultString">default</string>
 </resources>

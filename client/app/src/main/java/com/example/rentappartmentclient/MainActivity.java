@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,13 +11,11 @@ import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
-    ImageView sortButton;
-    Toolbar toolbar;
+    private static ImageView sortButton;
+    private static Toolbar toolbar;
 
     FavoritesFragment favoritesFragment = new FavoritesFragment();
     FiltersFragment filtersFragment = new FiltersFragment();
@@ -26,17 +23,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     LocationFragment locationFragment = new LocationFragment();
     SortFragment sortFragment = new SortFragment();
 
-    private void setHomeToolbar() {
+    public static void setHomeToolbar() {
         toolbar.setTitle(R.string.home);
         toolbar.setNavigationIcon(null);
         sortButton.setVisibility(View.VISIBLE);
     }
 
-    private void setSettingsToolbar(int title) {
+    public static void setSettingsToolbar(String title) {
         toolbar.setTitle(title);
-        toolbar.setNavigationIcon(R.drawable.ic_back_foreground);
-        //toolbar.setContentInsetStartWithNavigation(0);
-        //toolbar.setTitleMarginStart(0);
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         sortButton.setVisibility(View.INVISIBLE);
     }
 
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, sortFragment).commit();
-                setSettingsToolbar(R.string.sort);
+                setSettingsToolbar(getResources().getString(R.string.sort));
             }
         });
 
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.favorite:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, favoritesFragment).commit();
-                setSettingsToolbar(R.string.favorites);
+                setSettingsToolbar(getResources().getString(R.string.favorites));
                 return true;
 
             case R.id.home:
@@ -85,12 +80,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.filter:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, filtersFragment).commit();
-                setSettingsToolbar(R.string.filters);
+                setSettingsToolbar(getResources().getString(R.string.filters));
                 return true;
 
             case R.id.location:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, locationFragment).commit();
-                setSettingsToolbar(R.string.location);
+                setSettingsToolbar(getResources().getString(R.string.location));
                 return true;
         }
         return false;

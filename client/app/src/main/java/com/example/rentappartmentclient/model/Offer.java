@@ -44,6 +44,17 @@ public class Offer {
     @JoinColumn(name = "contact", nullable = false)
     private Contact contact;
 
+    @Column(name = "main_image")
+    private String mainImage;
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+    }
+
     public Contact getContact() {
         return contact;
     }

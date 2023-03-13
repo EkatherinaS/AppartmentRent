@@ -13,8 +13,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <!-- Customize your theme here. -->
-        <item name="homeAsUpIndicator">@drawable/ic_back_foreground</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_back_foreground</item>
+        <item name="homeAsUpIndicator">@drawable/ic_toolbar_back</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_toolbar_back</item>
     </style>
 
     <style name="Toolbar" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -28,10 +28,77 @@
 
     <style name="toolbarButton">
         <item name="android:layout_marginEnd">10dp</item>
-        <item name="tint">@color/white</item>
+        <item name="tint">@color/light</item>
         <item name="android:layout_width">60dp</item>
         <item name="android:layout_height">60dp</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
+    </style>
+    
+    <style name="HeaderTextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="HeaderSecondaryTextView">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="HeaderThirdTextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="NormalTextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_gravity">left</item>
+    </style>
+
+    <style name="NormalCheckbox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:buttonTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="NormalEditText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/shape_edittext_round_corners</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="CheckboxLinearLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="NormalButton">
+        <item name="android:textColor">@color/light</item>
+        <item name="android:backgroundTint">@color/colorSecondary</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="RecyclerViewButton" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@color/light</item>
     </style>
 </resources>

@@ -28,7 +28,7 @@ public class AddressDao {
     }
 
     public void deleteAllAddresses() {
-        repository.deleteAll(Streamable.of(repository.findAll()));
+        repository.deleteAll();
     }
 
     public Address findById(String id) {

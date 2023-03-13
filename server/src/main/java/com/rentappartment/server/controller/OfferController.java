@@ -19,11 +19,6 @@ public class OfferController {
         return offerDao.getAllOffers();
     }
 
-    @GetMapping("/offer/get-favorites")
-    public List<Offer> getFavoriteOffers() {
-        return offerDao.getFavoriteOffers();
-    }
-
     @GetMapping("/offer/get-filtered")
     public List<Offer> getFilteredOffers(boolean flat, boolean room,
                                          int priceMin, int priceMax,

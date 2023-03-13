@@ -131,7 +131,11 @@ public class EtagiParser extends parserClass {
         fullDescription = getStringValue(getTextFromXpath(fullDescriptionXpath));
         contactPhoneNumber = getStringValue(getTextFromXpath(contactPhoneNumberXpath));
         fio = getStringValue(getTextFromXpath(fioXpath));
-        type = getStringValue(getTextFromXpath(typeXpath));
+        type = switch (getStringValue(getTextFromXpath(typeXpath))) {
+            case "Квартиры" -> "квартира";
+            case "Комната" -> "комната";
+            default -> "";
+        };
         price = getDoubleValue(getTextFromXpath(priceXpath));
         addressText = getTextFromElement(doc.select(addressClass)).replace(" На карте", "");
         roomNumber = getIntegerValue(getTextFromXpath(roomNumberXpath));
@@ -157,7 +161,6 @@ public class EtagiParser extends parserClass {
 
         Offer offer = new Offer();
         offer.setAddress(address);
-        offer.setFavorite(favorite);
         offer.setArea(area);
         offer.setContact(contact);
         offer.setFloor(floor);
@@ -182,6 +185,7 @@ public class EtagiParser extends parserClass {
                 imageXpath = String.format(imagePatternXpath, i);
                 imageUrl = getStringValue(getAttrFromXpath(imageXpath, "src"));
                 if (!Objects.equals(imageUrl, defaultString)) {
+                    image = new Image();
                     image.setImageUrl(imageUrl);
                     image.setOffer(offer);
                     applicationContext.getBean(ImageDao.class).save(image);

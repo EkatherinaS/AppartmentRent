@@ -28,7 +28,7 @@ public class ContactDao {
     }
 
     public void deleteAllContacts() {
-        repository.deleteAll(Streamable.of(repository.findAll()));
+        repository.deleteAll();
     }
 
     public Contact findById(String id) {

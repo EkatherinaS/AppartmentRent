@@ -21,16 +21,18 @@ public class OfferDao {
         repository.delete(offer);
     }
 
+    public Offer findById(int id) {
+        return repository.findById(id).orElse(null);
+    }
+
     public List<Offer> getAllOffers() {
         List<Offer> list = new ArrayList<>();
         Streamable.of(repository.findAll()).forEach(list::add);
         return list;
     }
 
-    public List<Offer> getFavoriteOffers() {
-        List<Offer> list = new ArrayList<>();
-        Streamable.of(repository.findAll()).filter(Offer::getFavorite).forEach(list::add);
-        return list;
+    public void deleteAllOffers() {
+        repository.deleteAll();
     }
 
     public List<Offer> getFilteredOffers(boolean flat, boolean room,
@@ -66,7 +68,4 @@ public class OfferDao {
         return list;
     }
 
-    public Offer findById(int id) {
-        return repository.findById(id).orElse(null);
-    }
 }

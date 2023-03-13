@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btnFilter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/layerlist_button_shadow"
+        android:drawableEnd="@drawable/ic_move_vert"
+        android:text="@string/sortFilter"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorPrimary"
+        app:backgroundTint="@null"
+        tools:ignore="RtlCompat" />
+
+    <ToggleButton
+        android:id="@+id/tbSort"
+        android:background="@drawable/selector_toggle_button_sort"
+        android:textOff="@string/emptyString"
+        android:textOn='@string/emptyString'
+        android:layout_height="match_parent"
+        android:layout_width="50dp"
+        android:layout_margin="5dp"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

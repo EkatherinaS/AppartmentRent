@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.rentappartmentclient.adapter.OfferAdapter;
+import com.example.rentappartmentclient.adapter.ItemClickListener;
 import com.example.rentappartmentclient.model.Offer;
 import com.example.rentappartmentclient.retrofit.OfferApi;
 import com.example.rentappartmentclient.retrofit.RetrofitService;
@@ -26,7 +27,13 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     RecyclerView rvOffers;
-    Context context;
+
+    ItemClickListener itemClickListener;
+    OfferFragment offerFragment;
+
+    public static Context context;
+
+    View mainView;
 
     public HomeFragment() {
         // require a empty public constructor
@@ -35,12 +42,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View mainView = inflater.inflate(R.layout.fragment_home, container, false);
+        mainView = inflater.inflate(R.layout.fragment_home, container, false);
         context = mainView.getContext();
-
         rvOffers = mainView.findViewById(R.id.rvOffers);
         rvOffers.setLayoutManager(new LinearLayoutManager(context));
-
         loadOffers();
 
         return mainView;
@@ -64,7 +69,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateListView(List<Offer> offerList) {
-        OfferAdapter offerAdapter = new OfferAdapter(offerList);
+        itemClickListener=new ItemClickListener() {
+            @Override
+            public void onClick(int position, Offer value) {
+                offerFragment = new OfferFragment(offerList.get(position));
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, offerFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        };
+        OfferAdapter offerAdapter = new OfferAdapter(offerList, itemClickListener);
         rvOffers.setAdapter(offerAdapter);
     }
 

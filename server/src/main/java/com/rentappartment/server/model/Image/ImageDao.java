@@ -30,7 +30,7 @@ public class ImageDao {
     }
 
     public void deleteAllImages() {
-        repository.deleteAll(Streamable.of(repository.findAll()));
+        repository.deleteAll();
     }
 
     public Image findById(String id) {
