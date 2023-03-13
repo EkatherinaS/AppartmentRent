@@ -107,7 +107,6 @@ public class EtagiParser extends parserClass {
     private void parseFlat(String url) {
 
         Double area;
-        Boolean favorite = false;
         Integer floor = null;
         String fullDescription;
         Double kitchenArea;

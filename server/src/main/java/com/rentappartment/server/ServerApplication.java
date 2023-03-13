@@ -5,7 +5,6 @@ import com.rentappartment.server.model.Contact.ContactDao;
 import com.rentappartment.server.model.Image.ImageDao;
 import com.rentappartment.server.model.Offer.OfferDao;
 import com.rentappartment.server.model.Parsing.EtagiParser;
-import jakarta.transaction.Transactional;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
