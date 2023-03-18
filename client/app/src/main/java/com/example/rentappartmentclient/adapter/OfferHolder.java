@@ -1,6 +1,7 @@
 package com.example.rentappartmentclient.adapter;
 
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;

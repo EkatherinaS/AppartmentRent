@@ -1,36 +1,21 @@
 package com.rentappartment.server.model.User;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "User")
+@Table(name = "\"User\"")
 public class User {
   @Id
-  @Column(name = "login", nullable = false)
-  private String login;
-  @Column(name = "password", nullable = false)
-  private String password;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "user_id", nullable = false)
+  private int userId;
 
-
-  public String getLogin() {
-    return login;
+  public int getUserId() {
+    return userId;
   }
 
-  public void setLogin(String login) {
-    this.login = login;
-  }
-
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
 }

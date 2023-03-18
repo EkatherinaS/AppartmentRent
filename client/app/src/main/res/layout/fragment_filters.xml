@@ -96,7 +96,7 @@
                 style="@style/HeaderTextView">
             </TextView>
             <CheckBox
-                android:id="@+id/checkBox3"
+                android:id="@+id/cbTypeStudio"
                 android:text="@string/tvTypeStudio"
                 style="@style/NormalCheckbox"
                 android:layout_weight="1"/>

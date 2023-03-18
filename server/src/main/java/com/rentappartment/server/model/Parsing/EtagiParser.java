@@ -81,26 +81,26 @@ public class EtagiParser extends parserClass {
 
             etagiLogger.info("Fetching " + pageUrl + "...");
             doc = documentFromUrl(pageUrl);
+            if (doc != null) {
+                flatUrlList = doc.select("a[href*=/realty_rent/]");
 
-            flatUrlList = doc.select("a[href*=/realty_rent/]");
+                //Go through all flats on the page
+                for (Element flatUrlElement : flatUrlList) {
+                    flatUrl = flatUrlElement.attr("abs:href");
+                    if (flatUrl.length() > url.length()) {
 
-            //Go through all flats on the page
-            for (Element flatUrlElement : flatUrlList) {
-                flatUrl = flatUrlElement.attr("abs:href");
-                if (flatUrl.length() > url.length()) {
-
-                    //If it is a flat url and id does not match the previous one,
-                    //parse flat url
-                    if (Character.isDigit(flatUrl.charAt(url.length())) &&
-                            !Objects.equals(lastFlatLink, flatUrl)) {
-                        lastFlatLink = flatUrl;
-                        parseFlat(flatUrl);
+                        //If it is a flat url and id does not match the previous one,
+                        //parse flat url
+                        if (Character.isDigit(flatUrl.charAt(url.length())) &&
+                                !Objects.equals(lastFlatLink, flatUrl)) {
+                            lastFlatLink = flatUrl;
+                            parseFlat(flatUrl);
+                        }
                     }
                 }
             }
         }
     }
-
 
 
     //Parse a flat page by url
@@ -136,11 +136,18 @@ public class EtagiParser extends parserClass {
             default -> "";
         };
         price = getDoubleValue(getTextFromXpath(priceXpath));
-        addressText = getTextFromElement(doc.select(addressClass)).replace(" На карте", "");
+        addressText = getTextFromElement(doc.select(addressClass))
+                .replace(" На карте", "");
+        if(addressText.contains("(")) {
+            addressText = addressText.substring(0, addressText.indexOf("("));
+        }
         roomNumber = getIntegerValue(getTextFromXpath(roomNumberXpath));
         area = getDoubleValue(getTextFromXpath(areaXpath));
         kitchenArea = getDoubleValue(getTextFromXpath(kitchenAreaXpath));
         year = getIntegerValue(getTextFromXpath(yearXpath));
+        if (year < 1000) {
+            year += 1900;
+        }
         floorNumbers = getIntegerFromString(getStringValue(getTextFromXpath(floorNumbersXpath)));
         if (floorNumbers.size() > 1) {
             floor = floorNumbers.get(0);
@@ -168,7 +175,8 @@ public class EtagiParser extends parserClass {
         offer.setType(type);
         offer.setKitchenArea(kitchenArea);
         offer.setRoomNumber(roomNumber);
-        applicationContext.getBean(OfferDao.class).save(offer);
+        offer = applicationContext.getBean(OfferDao.class).saveIfNotExists(offer);
+
 
         ArrayList<String> xpathImageButton = new ArrayList<>() {
             {

@@ -6,10 +6,9 @@ import com.rentappartment.server.model.Image.Image;
 import com.rentappartment.server.model.Offer.Offer;
 import com.rentappartment.server.model.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,16 +22,17 @@ public class FavoriteController {
     }
 
     @GetMapping("/favorite/get-by-user")
-    public List<Offer> getFavoriteOffers(@RequestParam(name="user") User user) {
-        return favoriteDao.getFavoriteOffersByUser(user);
+    public List<Offer> getFavoriteOffers(@RequestParam(name="user_id") int userId) {
+        return favoriteDao.getFavoriteOffersByUser(userId);
     }
 
-    @GetMapping("/favorite/add")
-    public void addFavorite(@RequestParam(name="user") User user,
-                        @RequestParam(name="offer") Offer offer) {
-        Favorite favorite = new Favorite();
-        favorite.setOffer(offer);
-        favorite.setUser(user);
-        favoriteDao.save(favorite);
+    @PostMapping("/favorite/save")
+    public Favorite saveFavorite(@RequestBody Favorite favorite) {
+        return favoriteDao.save(favorite);
+    }
+
+    @PostMapping("/favorite/delete")
+    public Favorite deleteFavorite(@RequestBody Favorite favorite) {
+        return favoriteDao.delete(favorite);
     }
 }

@@ -1,15 +1,15 @@
 package com.rentappartment.server.model.Offer;
 
-
 import com.rentappartment.server.model.Address.Address;
 import com.rentappartment.server.model.Contact.Contact;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
-@Table(name = "Offer")
+@Table(name = "\"Offer\"")
 public class Offer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code", nullable = false)
     private Integer id;
 
@@ -38,13 +38,24 @@ public class Offer {
     @Column(name = "main_image")
     private String mainImage;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @Column(name = "date_updated")
+    private Date dateUpdated;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "contact", nullable = false)
     private Contact contact;
+
+    public void updateDateUpdated() {
+        dateUpdated = new Date();
+    }
+
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
 
     public Contact getContact() {
         return contact;
@@ -128,5 +139,9 @@ public class Offer {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

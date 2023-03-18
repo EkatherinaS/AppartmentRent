@@ -1,38 +1,30 @@
 package com.rentappartment.server.model.Favorite;
 
-
 import com.rentappartment.server.model.Offer.Offer;
 import com.rentappartment.server.model.User.User;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Favorite")
+@Table(name = "\"Favorite\"")
+@IdClass(FavoriteId.class)
 public class Favorite {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private long id;
-
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "user", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "user_entity", nullable = false)
   private User user;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @Column(name = "offer", nullable = false)
+  @Id
+  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "offer_entity", nullable = false)
   private Offer offer;
-
-
-  public long getId() {
-    return id;
-  }
 
 
   public User getUser() {
     return user;
   }
 
-  public void setUser(User userId) {
+  public void setUser(User user) {
     this.user = user;
   }
 

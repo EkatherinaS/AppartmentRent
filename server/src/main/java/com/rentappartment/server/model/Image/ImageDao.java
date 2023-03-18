@@ -15,12 +15,12 @@ public class ImageDao {
     @Autowired
     private ImageRepository repository;
 
-    public void save(Image address) {
-        repository.save(address);
+    public void save(Image image) {
+        repository.save(image);
     }
 
-    public void delete(Image address) {
-        repository.delete(address);
+    public void delete(Image image) {
+        repository.delete(image);
     }
 
     public List<Image> getAllImages() {

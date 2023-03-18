@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.example.rentappartmentclient.adapter.ItemClickListener;
-import com.example.rentappartmentclient.adapter.OfferAdapter;
-import com.example.rentappartmentclient.model.Image;
-import com.example.rentappartmentclient.model.Offer;
-import com.example.rentappartmentclient.retrofit.OfferApi;
+import com.example.rentappartmentclient.retrofit.UserManager;
+import com.example.rentappartmentclient.model.database.Favorite;
+import com.example.rentappartmentclient.retrofit.FavoriteListManager;
+import com.example.rentappartmentclient.model.database.Image;
+import com.example.rentappartmentclient.model.database.Offer;
+import com.example.rentappartmentclient.retrofit.api.OfferApi;
 import com.example.rentappartmentclient.retrofit.RetrofitService;
 import com.squareup.picasso.Picasso;
 
@@ -86,11 +85,11 @@ public class OfferFragment extends Fragment {
     }
 
     private String getAddress() {
-        String address;
-        String addressValue = offer.getAddress().getAddress();
-        String district = addressValue.substring(0, addressValue.indexOf(",") + 1);
-        String street = addressValue.substring(addressValue.indexOf(",") + 2, addressValue.indexOf("("));
-        address = "Пермь, " + district + "\n" + street;
+        String address = offer.getAddress().getAddress();
+        if (address.contains(",")) {
+            return "Пермь, " + address.substring(0, address.indexOf(",") + 1) + "\n" +
+                    address.substring(address.indexOf(",") + 2);
+        }
         return address;
     }
 
@@ -99,6 +98,10 @@ public class OfferFragment extends Fragment {
     }
     private String getRoomNumber() {
         return offer.getRoomNumber().toString();
+    }
+
+    private boolean getFavorite() {
+        return FavoriteListManager.getInstance().checkIfFavorite(offer);
     }
 
     @Override
@@ -122,7 +125,6 @@ public class OfferFragment extends Fragment {
         tvOfferHeader.setText(getHeader());
         tvAddress.setText(getAddress());
         tvPrice.setText(getPrice());
-        tbFavorite.setChecked(offer.getFavorite());
         tvRoomNumberValue.setText(getRoomNumber());
         tvKitchenSpaceValue.setText(getKitchenSpace());
         tvYearValue.setText(getYear());
@@ -130,13 +132,13 @@ public class OfferFragment extends Fragment {
         tvDescription.setText(getDescription());
         tvContactsName.setText(getContactName());
         tvContactsPhone.setText(getContactPhone());
+        tbFavorite.setChecked(getFavorite());
     }
 
     private void initializeViews(View mainView){
         tvOfferHeader = mainView.findViewById(R.id.tvOfferHeader);
         tvPrice = mainView.findViewById(R.id.tvPrice);
         tvAddress = mainView.findViewById(R.id.tvAddress);
-        tbFavorite = mainView.findViewById(R.id.tbFavorite);
         tvRoomNumberValue = mainView.findViewById(R.id.tvRoomNumberValue);
         tvKitchenSpaceValue = mainView.findViewById(R.id.tvKitchenSpaceValue);
         tvYearValue = mainView.findViewById(R.id.tvYearValue);
@@ -145,11 +147,28 @@ public class OfferFragment extends Fragment {
         tvContactsName = mainView.findViewById(R.id.tvContactsName);
         tvContactsPhone = mainView.findViewById(R.id.tvContactsPhone);
         llImages = mainView.findViewById(R.id.llImages);
+        tbFavorite = mainView.findViewById(R.id.tbFavorite);
+
+        tbFavorite.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Favorite favorite = new Favorite();
+                    favorite.setOffer(offer);
+                    favorite.setUser(UserManager.getInstance().getCurrentUser());
+
+                    if (tbFavorite.isChecked()) {
+                        FavoriteListManager.getInstance().saveFavorite(favorite);
+                    } else {
+                        FavoriteListManager.getInstance().deleteFavorite(favorite);
+                    }
+                }
+            });
     }
 
     private void loadImages() {
-        RetrofitService retrofitService = new RetrofitService();
-        OfferApi offerApi = retrofitService.getRetrofit().create(OfferApi.class);
+        OfferApi offerApi = RetrofitService.getRetrofit().create(OfferApi.class);
         offerApi.getImagesByOffer(offer.getId())
                 .enqueue(new Callback<List<Image>>() {
                     @Override

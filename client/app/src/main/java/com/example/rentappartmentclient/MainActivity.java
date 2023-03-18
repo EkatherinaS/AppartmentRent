@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.rentappartmentclient.retrofit.UserManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -16,7 +17,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView bottomNavigationView;
     private static ImageView sortButton;
     private static Toolbar toolbar;
-
     FavoritesFragment favoritesFragment = new FavoritesFragment();
     FiltersFragment filtersFragment = new FiltersFragment();
     HomeFragment homeFragment = new HomeFragment();
@@ -33,35 +33,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         toolbar.setTitle(title);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         sortButton.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-                setHomeToolbar();
-            }
-        });
-
-        sortButton = findViewById(R.id.sort_button);
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, sortFragment).commit();
-                setSettingsToolbar(getResources().getString(R.string.sort));
-            }
-        });
-
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.home);
     }
 
     @Override
@@ -89,5 +60,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        UserManager.setMainActivity(this);
+        UserManager.getInstance().checkUserFromPreferenceManager();
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+                setHomeToolbar();
+            }
+        });
+
+        sortButton = findViewById(R.id.sort_button);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, sortFragment).commit();
+                setSettingsToolbar(getResources().getString(R.string.sort));
+            }
+        });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.home);
     }
 }

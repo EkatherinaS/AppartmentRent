@@ -10,19 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.rentappartmentclient.adapter.OfferAdapter;
 import com.example.rentappartmentclient.adapter.ItemClickListener;
-import com.example.rentappartmentclient.model.Offer;
-import com.example.rentappartmentclient.retrofit.OfferApi;
-import com.example.rentappartmentclient.retrofit.RetrofitService;
+import com.example.rentappartmentclient.retrofit.FavoriteListManager;
+import com.example.rentappartmentclient.model.database.Offer;
+import com.example.rentappartmentclient.retrofit.OfferListManager;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -33,42 +28,26 @@ public class HomeFragment extends Fragment {
 
     public static Context context;
 
-    View mainView;
+    private View mainView;
 
-    public HomeFragment() {
-        // require a empty public constructor
-    }
+    public HomeFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_home, container, false);
         context = mainView.getContext();
         rvOffers = mainView.findViewById(R.id.rvOffers);
         rvOffers.setLayoutManager(new LinearLayoutManager(context));
-        loadOffers();
+
+        FavoriteListManager.setContext(context);
+        OfferListManager.setContext(context, this);
+
+        OfferListManager.getInstance().loadOffers();
 
         return mainView;
     }
 
-    private void loadOffers() {
-        RetrofitService retrofitService = new RetrofitService();
-        OfferApi offerApi = retrofitService.getRetrofit().create(OfferApi.class);
-        offerApi.getAllOffers()
-                .enqueue(new Callback<List<Offer>>() {
-                    @Override
-                    public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
-                        populateListView(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Loading offers failed", Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
-    private void populateListView(List<Offer> offerList) {
+    public void populateListView(List<Offer> offerList) {
         itemClickListener=new ItemClickListener() {
             @Override
             public void onClick(int position, Offer value) {
@@ -82,5 +61,4 @@ public class HomeFragment extends Fragment {
         OfferAdapter offerAdapter = new OfferAdapter(offerList, itemClickListener);
         rvOffers.setAdapter(offerAdapter);
     }
-
 }

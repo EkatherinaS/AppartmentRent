@@ -67,7 +67,7 @@ public abstract class parserClass {
             return Jsoup.connect(url).maxBodySize(0).userAgent("").referrer("").get();
         }
         catch (IOException ex) {
-            parserLogger.error("Unable to get document from url: " + url);
+            parserLogger.error("Unable to get document from url: " + url + ex.getMessage());
             return null;
         }
     }

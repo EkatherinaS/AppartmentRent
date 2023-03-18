@@ -1,4 +1,4 @@
-package com.example.rentappartmentclient.model;
+package com.example.rentappartmentclient.model.database;
 import jakarta.persistence.*;
 
 @Entity

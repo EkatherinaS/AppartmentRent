@@ -1,7 +1,6 @@
 package com.rentappartment.server.model.Favorite;
 
 import com.rentappartment.server.model.Offer.Offer;
-import com.rentappartment.server.model.Offer.OfferRepository;
 import com.rentappartment.server.model.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
@@ -15,19 +14,20 @@ public class FavoriteDao {
     @Autowired
     private FavoriteRepository repository;
 
-    public void save(Favorite favorite) {
-        repository.save(favorite);
+    public Favorite save(Favorite favorite) {
+        return repository.save(favorite);
     }
 
-    public void delete(Favorite favorite) {
+    public Favorite delete(Favorite favorite) {
         repository.delete(favorite);
+        return favorite;
     }
 
     public void deleteAllFavorites() {
         repository.deleteAll();
     }
 
-    public Favorite findById(int id) {
+    public Favorite findById(FavoriteId id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -37,10 +37,10 @@ public class FavoriteDao {
         return list;
     }
 
-    public List<Offer> getFavoriteOffersByUser(User user) {
+    public List<Offer> getFavoriteOffersByUser(int userId) {
         List<Offer> list = new ArrayList<>();
         Streamable.of(repository.findAll())
-                .filter(favorite -> favorite.getUser() == user)
+                .filter(favorite -> favorite.getUser().getUserId() == userId)
                 .forEach(favorite -> list.add(favorite.getOffer()));
         return list;
     }

@@ -1,4 +1,4 @@
-package com.example.rentappartmentclient.model;
+package com.example.rentappartmentclient.model.database;
 
 
 import jakarta.persistence.*;
@@ -33,9 +33,6 @@ public class Offer {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "favorite", nullable = false)
-    private Boolean favorite = false;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
@@ -69,14 +66,6 @@ public class Offer {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Boolean getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
     }
 
     public Double getPrice() {

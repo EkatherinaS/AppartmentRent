@@ -1,14 +1,9 @@
 package com.rentappartment.server.controller;
 
-import com.rentappartment.server.model.Image.Image;
-import com.rentappartment.server.model.Image.ImageDao;
-import com.rentappartment.server.model.Offer.Offer;
 import com.rentappartment.server.model.User.User;
 import com.rentappartment.server.model.User.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,13 +17,14 @@ public class UserController {
         return userDao.getAllUsers();
     }
 
+
     @GetMapping("/user/check")
-    public boolean checkUser(@RequestParam(name="user") User user) {
-        return userDao.checkUser(user);
+    public User checkUser(@RequestParam(name="user_id") int userId) {
+        return userDao.findById(userId);
     }
 
-    @GetMapping("/user/add")
-    public void addUser(@RequestParam(name="user") User user) {
-        userDao.save(user);
+    @GetMapping("/user/create")
+    public User createUser() {
+        return userDao.create();
     }
 }

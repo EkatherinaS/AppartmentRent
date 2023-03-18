@@ -47,4 +47,9 @@
     <string name="sortFilter">Фильтр</string>
 
     <string name="defaultString">default</string>
+
+    <string name="tvLogin">Логин:</string>
+    <string name="tvPassword">Пароль:</string>
+    <string name="btnLogin">Войти</string>
+    <string name="btnRegistration">Регистрация</string>
 </resources>

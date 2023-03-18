@@ -1,7 +1,5 @@
 package com.rentappartment.server;
 
-import com.rentappartment.server.model.Address.AddressDao;
-import com.rentappartment.server.model.Contact.ContactDao;
 import com.rentappartment.server.model.Image.ImageDao;
 import com.rentappartment.server.model.Offer.OfferDao;
 import com.rentappartment.server.model.Parsing.EtagiParser;
@@ -12,6 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
@@ -34,15 +34,10 @@ public class ServerApplication {
 
 	public static void main(String[] args) {
 		applicationContext = SpringApplication.run(ServerApplication.class, args);
-		deleteAll();
+		Date date = new Date();
 		new EtagiParser().parse();
-		//applicationContext.getBean(WebDriver.class).close();
-	}
+		applicationContext.getBean(OfferDao.class).deleteOldOffers(date);
 
-	private static void deleteAll() {
-		applicationContext.getBean(ImageDao.class).deleteAllImages();
-		applicationContext.getBean(OfferDao.class).deleteAllOffers();
-		applicationContext.getBean(ContactDao.class).deleteAllContacts();
-		applicationContext.getBean(AddressDao.class).deleteAllAddresses();
+		//applicationContext.getBean(WebDriver.class).close();
 	}
 }
