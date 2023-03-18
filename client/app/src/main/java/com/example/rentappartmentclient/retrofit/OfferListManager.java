@@ -6,73 +6,87 @@ import android.widget.Toast;
 import com.example.rentappartmentclient.HomeFragment;
 import com.example.rentappartmentclient.model.OfferFilters;
 import com.example.rentappartmentclient.model.database.Offer;
+import com.example.rentappartmentclient.model.database.User;
+import com.example.rentappartmentclient.retrofit.api.FavoriteApi;
 import com.example.rentappartmentclient.retrofit.api.OfferApi;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OfferListManager {
+public class OfferListManager extends Observable {
+    private final Context context;
+    private final OfferApi offerApi;
     private List<Offer> offerList;
-    private static Context context;
-    private static HomeFragment homeFragment;
-    private static OfferListManager instance;
 
 
-    public static void setContext(Context context, HomeFragment homeFragment) {
-        OfferListManager.context = context;
-        OfferListManager.homeFragment = homeFragment;
-    }
-
-    public static OfferListManager getInstance() {
-        if (instance == null) {
-            instance = new OfferListManager();
-        }
-        return instance;
+    public OfferListManager(Context context) {
+        this.context = context;
+        this.offerList = new ArrayList<>();
+        this.offerApi = RetrofitService.getRetrofit().create(OfferApi.class);
     }
 
     public List<Offer> getOfferList() {
         return offerList;
     }
 
+    private void updateOfferList(List<Offer> offerList) {
+        this.offerList = offerList;
+        setChanged();
+        notifyObservers();
+    }
+
     public void loadOffers() {
-        OfferApi offerApi = RetrofitService.getRetrofit().create(OfferApi.class);
         offerApi.getAllOffers()
                 .enqueue(new Callback<List<Offer>>() {
                     @Override
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
-                        offerList = response.body();
-                        homeFragment.populateListView(offerList);
+                        if (response.body() != null) {
+                            updateOfferList(response.body());
+                            Toast.makeText(context, "Загружен список предложений", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Ошибка загрузки списка предложений", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Loading offers failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Ошибка загрузки списка предложений", Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
-    public void loadFilteredOffers() {
-        OfferApi offerApi = RetrofitService.getRetrofit().create(OfferApi.class);
-        offerApi.getFilteredOffers(OfferFilters.flat, OfferFilters.room, OfferFilters.priceMin,
-                        OfferFilters.priceMax, OfferFilters.studio, OfferFilters.roomNumberMin,
-                        OfferFilters.roomNumberMax, OfferFilters.areaMin, OfferFilters.areaMax,
-                        OfferFilters.kitchenMin, OfferFilters.kitchenMax, OfferFilters.yearMin,
-                        OfferFilters.yearMax, OfferFilters.floorMin, OfferFilters.floorMax,
-                        OfferFilters.floorNumberMin, OfferFilters.floorNumberMax)
+    public void loadFilteredOffers(boolean flat, boolean room, int priceMin, int priceMax,
+                                   boolean studio, int roomNumberMin, int roomNumberMax,
+                                   int areaMin, int areaMax, int kitchenMin, int kitchenMax,
+                                   int yearMin, int yearMax, int floorMin, int floorMax,
+                                   int floorNumberMin, int floorNumberMax) {
+        offerApi.getFilteredOffers(flat, room, priceMin, priceMax, studio, roomNumberMin,
+                        roomNumberMax, areaMin, areaMax, kitchenMin, kitchenMax, yearMin,
+                        yearMax, floorMin, floorMax, floorNumberMin, floorNumberMax)
                 .enqueue(new Callback<List<Offer>>() {
                     @Override
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
-                        offerList = response.body();
-                        homeFragment.populateListView(offerList);
+                        if (response.body() != null) {
+                            updateOfferList(response.body());
+                            Toast.makeText(context, "Загружен список предложений с фильтрами", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Ошибка загрузки списка предложений с фильтрами", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Loading filtered offers failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Ошибка загрузки с фильтрами", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    public void loadSortedOffers() {
+
     }
 }

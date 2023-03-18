@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentappartmentclient.R;
+import com.example.rentappartmentclient.retrofit.DataManager;
 import com.example.rentappartmentclient.retrofit.UserManager;
 import com.example.rentappartmentclient.model.database.Favorite;
 import com.example.rentappartmentclient.retrofit.FavoriteListManager;
@@ -63,7 +64,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
         holder.header.setText(header);
         holder.address.setText(address);
         holder.price.setText(price);
-        holder.favorite.setChecked(FavoriteListManager.getInstance().checkIfFavorite(offer));
+        holder.favorite.setChecked(DataManager.getInstance().getFavoriteListManager().checkIfFavorite(offer));
         Picasso.get()
                 .load(imageURL)
                 .resize(120, 120)
@@ -89,12 +90,12 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
             {
                 Favorite favorite = new Favorite();
                 favorite.setOffer(offerList.get(holder.getAdapterPosition()));
-                favorite.setUser(UserManager.getInstance().getCurrentUser());
+                favorite.setUser(DataManager.getInstance().getUser());
 
                 if (holder.favorite.isChecked()) {
-                    FavoriteListManager.getInstance().saveFavorite(favorite);
+                    DataManager.getInstance().getFavoriteListManager().saveFavorite(favorite);
                 } else {
-                    FavoriteListManager.getInstance().deleteFavorite(favorite);
+                    DataManager.getInstance().getFavoriteListManager().deleteFavorite(favorite);
                 }
             }
         });

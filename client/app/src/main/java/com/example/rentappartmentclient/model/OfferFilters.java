@@ -4,7 +4,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import com.example.rentappartmentclient.model.database.Offer;
-import com.example.rentappartmentclient.retrofit.OfferListManager;
+import com.example.rentappartmentclient.retrofit.DataManager;
 
 public class OfferFilters {
     
@@ -31,7 +31,7 @@ public class OfferFilters {
 
     public static void setValues() {
 
-        for (Offer offer: OfferListManager.getInstance().getOfferList()) {
+        for (Offer offer: DataManager.getInstance().getOfferList()) {
             priceMax = (int)max(offer.getPrice(), priceMax);
             priceMin = offer.getPrice() != -1 ?
                     (int)min(offer.getPrice(), priceMin) : priceMin;

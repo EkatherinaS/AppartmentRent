@@ -49,8 +49,13 @@ public class SortFragment extends Fragment {
     }
 
     private void getFilters() {
-        list.add(new Filter("Тип помещения", "Квартира"));
-        list.add(new Filter("Стоимость", -1));
-        list.add(new Filter("Количество комнат", -1));
+        list.add(new Filter("Тип помещения"));
+        list.add(new Filter("Стоимость"));
+        list.add(new Filter("Количество комнат"));
+        list.add(new Filter("Общая площадь"));
+        list.add(new Filter("Площадь кухни"));
+        list.add(new Filter("Год постройки"));
+        list.add(new Filter("Этаж"));
+        list.add(new Filter("Количество этажей"));
     }
 }

@@ -5,69 +5,47 @@ import android.widget.Toast;
 
 import com.example.rentappartmentclient.model.database.Favorite;
 import com.example.rentappartmentclient.model.database.Offer;
+import com.example.rentappartmentclient.model.database.User;
 import com.example.rentappartmentclient.retrofit.api.FavoriteApi;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FavoriteListManager {
+public class FavoriteListManager extends Observable {
+    private final Context context;
+    private final FavoriteApi favoriteApi;
+    private final User user;
     private List<Offer> favoriteList;
-    private static Context context;
-    private static FavoriteListManager instance;
 
-    public static void setContext(Context context) {
-        FavoriteListManager.context = context;
-    }
 
-    public static FavoriteListManager getInstance() {
-        if (instance == null) {
-            instance = new FavoriteListManager();
-        }
-        return instance;
-    }
-
-    public boolean checkIfFavorite(Offer offer) {
-        if (favoriteList != null) {
-            for(Offer favorite:favoriteList){
-                if (Objects.equals(favorite.getId(), offer.getId())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public FavoriteListManager(Context context, User user) {
+        this.context = context;
+        this.user = user;
+        this.favoriteList = new ArrayList<>();
+        this.favoriteApi = RetrofitService.getRetrofit().create(FavoriteApi.class);
     }
 
     public List<Offer> getFavoriteList() {
         return favoriteList;
     }
 
-    public void addFavorite(Offer offer) {
-        favoriteList.add(offer);
-    }
-
-    public void deleteFavorite(Offer offer) {
-        favoriteList.remove(offer);
-    }
-
-    public void getAllFavorite(int userId) {
-        FavoriteApi favoriteApi = RetrofitService.getRetrofit().create(FavoriteApi.class);
-        favoriteApi.getFavoriteByUser(userId)
+    public void loadFavoriteList() {
+        favoriteApi.getFavoriteByUser(user.getUserId())
                 .enqueue(new Callback<List<Offer>>() {
                     @Override
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
                         if (response.body() != null) {
-                            favoriteList = response.body();
+                            updateFavoriteList(response.body());
                             Toast.makeText(context, "Получен список избранного", Toast.LENGTH_LONG).show();
                         } else {
-                            favoriteList = new ArrayList<>();
                             Toast.makeText(context, "Ошибка получения списка", Toast.LENGTH_LONG).show();
                         }
-                        OfferListManager.getInstance().loadOffers();
                     }
 
                     @Override
@@ -77,8 +55,25 @@ public class FavoriteListManager {
                 });
     }
 
+
+    private void updateFavoriteList(List<Offer> favoriteList) {
+        this.favoriteList = favoriteList;
+        setChanged();
+        notifyObservers();
+    }
+
+
+    public boolean checkIfFavorite(Offer offer) {
+        for(Offer favorite:favoriteList){
+            if (Objects.equals(favorite.getId(), offer.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public void saveFavorite(Favorite favorite) {
-        FavoriteApi favoriteApi = RetrofitService.getRetrofit().create(FavoriteApi.class);
         favoriteApi.save(favorite)
                 .enqueue(new Callback<Favorite>() {
                     @Override
@@ -99,7 +94,6 @@ public class FavoriteListManager {
     }
 
     public void deleteFavorite(Favorite favorite) {
-        FavoriteApi favoriteApi = RetrofitService.getRetrofit().create(FavoriteApi.class);
         favoriteApi.delete(favorite)
                 .enqueue(new Callback<Favorite>() {
                     @Override
@@ -118,5 +112,23 @@ public class FavoriteListManager {
                         Toast.makeText(context, "Ошибка удаления из избранного", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+
+    private void addFavorite(Offer offer) {
+        favoriteList.add(offer);
+        setChanged();
+        notifyObservers();
+    }
+
+    private void deleteFavorite(Offer offer) {
+        for(Offer offerIterator: favoriteList) {
+            if(Objects.equals(offer.getId(), offerIterator.getId())) {
+                favoriteList.remove(offerIterator);
+                break;
+            }
+        }
+        setChanged();
+        notifyObservers();
     }
 }

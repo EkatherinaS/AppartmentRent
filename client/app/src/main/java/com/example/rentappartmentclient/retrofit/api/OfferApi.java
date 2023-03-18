@@ -17,6 +17,7 @@ public interface OfferApi {
     @GET("/image/get-by-offer")
     Call<List<Image>> getImagesByOffer(@Query("offerId") int offerId);
 
+    @GET("/offer/get-filtered")
     Call<List<Offer>> getFilteredOffers(@Query("flat") boolean flat,
                                         @Query("room") boolean room,
                                         @Query("priceMin") int priceMin,

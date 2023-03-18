@@ -348,33 +348,5 @@
             android:layout_height="match_parent"
             android:padding="10dp"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tvWebsite"
-                android:text="@string/tvWebsite"
-                style="@style/HeaderTextView">
-            </TextView>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <CheckBox
-                    android:id="@+id/cbWebsiteEtagi"
-                    android:text="@string/cbWebsiteEtagi"
-                    style="@style/NormalCheckbox"
-                    android:layout_weight="1"
-                    android:paddingTop="10dp"/>
-                <CheckBox
-                    android:id="@+id/cbWebsiteN1"
-                    android:text="@string/cbWebsiteN1"
-                    style="@style/NormalCheckbox"
-                    android:layout_weight="1"
-                    android:layout_column="1" />
-            </LinearLayout>
-        </TableRow>
     </TableLayout>
 </ScrollView>

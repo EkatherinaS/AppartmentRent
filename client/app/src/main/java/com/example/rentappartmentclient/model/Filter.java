@@ -6,8 +6,6 @@ public class Filter {
 
     private static int idNext = 0;
     private String name;
-    private Object value;
-    private Object defaultValue;
     private int id;
     private boolean sortAscending;
 
@@ -29,16 +27,6 @@ public class Filter {
         }
     }
 
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        if (value != null) {
-            this.value = value;
-        }
-    }
-
     public void sortAscending() {
         sortAscending = true;
     }
@@ -47,10 +35,8 @@ public class Filter {
         sortAscending = false;
     }
 
-    public Filter(String name, Object defaultValue) {
+    public Filter(String name) {
         this.name = name;
-        this.defaultValue = defaultValue;
-        this.value = defaultValue;
         this.sortAscending = true;
         this.id = idNext;
         idNext++;

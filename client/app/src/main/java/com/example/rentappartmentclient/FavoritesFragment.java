@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.rentappartmentclient.adapter.OfferAdapter;
 import com.example.rentappartmentclient.adapter.ItemClickListener;
+import com.example.rentappartmentclient.retrofit.DataManager;
 import com.example.rentappartmentclient.retrofit.FavoriteListManager;
 import com.example.rentappartmentclient.model.database.Offer;
 
@@ -37,24 +38,24 @@ public class FavoritesFragment extends Fragment {
 
         rvFavoriteOffers = mainView.findViewById(R.id.rvFavoriteOffers);
         rvFavoriteOffers.setLayoutManager(new LinearLayoutManager(context));
-
-        populateListView(FavoriteListManager.getInstance().getFavoriteList());
-
+        populateListView(DataManager.getInstance().getFavoriteList());
         return mainView;
     }
 
-    private void populateListView(List<Offer> favoriteOfferList) {
-        itemClickListener=new ItemClickListener() {
-            @Override
-            public void onClick(int position, Offer value) {
-                offerFragment = new OfferFragment(favoriteOfferList.get(position));
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, offerFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        };
-        OfferAdapter offerAdapter = new OfferAdapter(favoriteOfferList,itemClickListener);
-        rvFavoriteOffers.setAdapter(offerAdapter);
+    public void populateListView(List<Offer> favoriteOfferList) {
+        if (rvFavoriteOffers != null) {
+            itemClickListener=new ItemClickListener() {
+                @Override
+                public void onClick(int position, Offer value) {
+                    offerFragment = new OfferFragment(favoriteOfferList.get(position));
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, offerFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            };
+            OfferAdapter offerAdapter = new OfferAdapter(favoriteOfferList, itemClickListener);
+            rvFavoriteOffers.setAdapter(offerAdapter);
+        }
     }
 }

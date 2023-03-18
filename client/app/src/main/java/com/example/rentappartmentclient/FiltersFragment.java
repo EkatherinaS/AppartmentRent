@@ -29,6 +29,75 @@ public class FiltersFragment extends Fragment {
     private EditText etPriceMax;
     private CheckBox cbTypeStudio;
     private EditText etRoomNumberMin;
+
+    public boolean getTypeFlat() {
+        return cbTypeFlat.isChecked();
+    }
+
+    public boolean getTypeRoom() {
+        return cbTypeRoom.isChecked();
+    }
+
+    public int getPriceMin() {
+        return Integer.parseInt(etPriceMin.getText().toString());
+    }
+
+    public int getPriceMax() {
+        return Integer.parseInt(etPriceMax.getText().toString());
+    }
+
+    public boolean getTypeStudio() {
+        return cbTypeStudio.isChecked();
+    }
+
+    public int getRoomNumberMin() {
+        return Integer.parseInt(etRoomNumberMin.getText().toString());
+    }
+
+    public int getRoomNumberMax() {
+        return Integer.parseInt(etRoomNumberMax.getText().toString());
+    }
+
+    public int getSpaceMin() {
+        return Integer.parseInt(etSpaceMin.getText().toString());
+    }
+
+    public int getSpaceMax() {
+        return Integer.parseInt(etSpaceMax.getText().toString());
+    }
+
+    public int getKitchenSpaceMin() {
+        return Integer.parseInt(etKitchenSpaceMin.getText().toString());
+    }
+
+    public int getKitchenSpaceMax() {
+        return Integer.parseInt(etKitchenSpaceMax.getText().toString());
+    }
+
+    public int getYearMin() {
+        return Integer.parseInt(etYearMin.getText().toString());
+    }
+
+    public int getYearMax() {
+        return Integer.parseInt(etYearMax.getText().toString());
+    }
+
+    public int getFloorMin() {
+        return Integer.parseInt(etFloorMin.getText().toString());
+    }
+
+    public int getFloorMax() {
+        return Integer.parseInt(etFloorMax.getText().toString());
+    }
+
+    public int getFloorNumberMin() {
+        return Integer.parseInt(etFloorNumberMin.getText().toString());
+    }
+
+    public int getFloorNumberMax() {
+        return Integer.parseInt(etFloorNumberMax.getText().toString());
+    }
+
     private EditText etRoomNumberMax;
     private EditText etSpaceMin;
     private EditText etSpaceMax;
@@ -40,8 +109,7 @@ public class FiltersFragment extends Fragment {
     private EditText etFloorMax;
     private EditText etFloorNumberMin;
     private EditText etFloorNumberMax;
-    private CheckBox cbWebsiteEtagi;
-    private CheckBox cbWebsiteN1;
+    private boolean viewCreated = false;
 
     public FiltersFragment() {}
 
@@ -49,7 +117,6 @@ public class FiltersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_filters, container, false);
         context = view.getContext();
-        OfferFilters.setValues();
 
         cbTypeFlat = view.findViewById(R.id.cbTypeFlat);
         cbTypeRoom = view.findViewById(R.id.cbTypeRoom);
@@ -68,117 +135,124 @@ public class FiltersFragment extends Fragment {
         etFloorMax = view.findViewById(R.id.etFloorMax);
         etFloorNumberMin = view.findViewById(R.id.etFloorNumberMin);
         etFloorNumberMax = view.findViewById(R.id.etFloorNumberMax);
-        cbWebsiteEtagi = view.findViewById(R.id.cbWebsiteEtagi);
-        cbWebsiteN1 = view.findViewById(R.id.cbWebsiteN1);
+        viewCreated = true;
 
-        cbTypeFlat.setChecked(OfferFilters.flat);
-        cbTypeRoom.setChecked(OfferFilters.room);
-        cbTypeStudio.setChecked(OfferFilters.studio);
-        cbWebsiteEtagi.setChecked(OfferFilters.websiteEtagi);
-        cbWebsiteEtagi.setChecked(OfferFilters.websiteN1);
-        cbWebsiteN1.setEnabled(false);
-
-        etPriceMin.setText(String.valueOf(OfferFilters.priceMin));
-        etPriceMax.setText(String.valueOf(OfferFilters.priceMax));
-        etRoomNumberMin.setText(String.valueOf(OfferFilters.roomNumberMin));
-        etRoomNumberMax.setText(String.valueOf(OfferFilters.roomNumberMax));
-        etSpaceMin.setText(String.valueOf(OfferFilters.areaMin));
-        etSpaceMax.setText(String.valueOf(OfferFilters.areaMax));
-        etKitchenSpaceMin.setText(String.valueOf(OfferFilters.kitchenMin));
-        etKitchenSpaceMax.setText(String.valueOf(OfferFilters.kitchenMax));
-        etYearMin.setText(String.valueOf(OfferFilters.yearMin));
-        etYearMax.setText(String.valueOf(OfferFilters.yearMax));
-        etFloorMin.setText(String.valueOf(OfferFilters.floorMin));
-        etFloorMax.setText(String.valueOf(OfferFilters.floorMax));
-        etFloorNumberMin.setText(String.valueOf(OfferFilters.floorNumberMin));
-        etFloorNumberMax.setText(String.valueOf(OfferFilters.floorNumberMax));
-
-        etPriceMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.priceMin);
-            }
-        });
-        etPriceMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.priceMax);
-            }
-        });
-        etRoomNumberMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.roomNumberMin);
-            }
-        });
-        etRoomNumberMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.roomNumberMax);
-            }
-        });
-        etSpaceMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.areaMin);
-            }
-        });
-        etSpaceMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.areaMax);
-            }
-        });
-        etKitchenSpaceMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.kitchenMin);
-            }
-        });
-        etKitchenSpaceMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.kitchenMax);
-            }
-        });
-        etYearMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.yearMin);
-            }
-        });
-        etYearMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.yearMax);
-            }
-        });
-        etFloorMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.floorMin);
-            }
-        });
-        etFloorMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.floorMax);
-            }
-        });
-        etFloorNumberMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.floorNumberMin);
-            }
-        });
-        etFloorNumberMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextListener(v, hasFocus, OfferFilters.floorNumberMax);
-            }
-        });
+        setValues();
+        setListeners();
 
         return view;
+    }
+
+    public void setValues() {
+        if (viewCreated) {
+            cbTypeFlat.setChecked(OfferFilters.flat);
+            cbTypeRoom.setChecked(OfferFilters.room);
+            cbTypeStudio.setChecked(OfferFilters.studio);
+
+            etPriceMin.setText(String.valueOf(OfferFilters.priceMin));
+            etPriceMax.setText(String.valueOf(OfferFilters.priceMax));
+            etRoomNumberMin.setText(String.valueOf(OfferFilters.roomNumberMin));
+            etRoomNumberMax.setText(String.valueOf(OfferFilters.roomNumberMax));
+            etSpaceMin.setText(String.valueOf(OfferFilters.areaMin));
+            etSpaceMax.setText(String.valueOf(OfferFilters.areaMax));
+            etKitchenSpaceMin.setText(String.valueOf(OfferFilters.kitchenMin));
+            etKitchenSpaceMax.setText(String.valueOf(OfferFilters.kitchenMax));
+            etYearMin.setText(String.valueOf(OfferFilters.yearMin));
+            etYearMax.setText(String.valueOf(OfferFilters.yearMax));
+            etFloorMin.setText(String.valueOf(OfferFilters.floorMin));
+            etFloorMax.setText(String.valueOf(OfferFilters.floorMax));
+            etFloorNumberMin.setText(String.valueOf(OfferFilters.floorNumberMin));
+            etFloorNumberMax.setText(String.valueOf(OfferFilters.floorNumberMax));
+        }
+    }
+
+    public void setListeners() {
+        if (viewCreated) {
+            etPriceMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.priceMin);
+                }
+            });
+            etPriceMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.priceMax);
+                }
+            });
+            etRoomNumberMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.roomNumberMin);
+                }
+            });
+            etRoomNumberMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.roomNumberMax);
+                }
+            });
+            etSpaceMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.areaMin);
+                }
+            });
+            etSpaceMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.areaMax);
+                }
+            });
+            etKitchenSpaceMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.kitchenMin);
+                }
+            });
+            etKitchenSpaceMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.kitchenMax);
+                }
+            });
+            etYearMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.yearMin);
+                }
+            });
+            etYearMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.yearMax);
+                }
+            });
+            etFloorMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.floorMin);
+                }
+            });
+            etFloorMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.floorMax);
+                }
+            });
+            etFloorNumberMin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.floorNumberMin);
+                }
+            });
+            etFloorNumberMax.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editTextListener(v, hasFocus, OfferFilters.floorNumberMax);
+                }
+            });
+        }
     }
 
     private void editTextListener(View v, boolean hasFocus, int defaultValue) {

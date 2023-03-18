@@ -83,28 +83,28 @@ public class OfferDao {
                                          int yearMin, int yearMax,
                                          int floorMin, int floorMax,
                                          int floorNumberMin, int floorNumberMax) {
-        String typeFlat = "Квартира";
-        String typeRoom = "Комната";
+        String typeFlat = "квартира";
+        String typeRoom = "комната";
         List<Offer> list = new ArrayList<>();
         Streamable.of(repository.findAll())
                 .filter(offer ->
-                        ((offer.getType().equals(typeFlat) == flat && flat) ||
-                                (offer.getType().equals(typeRoom) == room && room)) &&
-                        offer.getPrice() >= priceMin &&
-                        offer.getPrice() <= priceMax &&
-                        (offer.getRoomNumber() == 0 && studio) &&
-                        offer.getRoomNumber() >= roomNumberMin &&
-                        offer.getRoomNumber() <= roomNumberMax &&
-                        offer.getArea() >= areaMin &&
-                        offer.getArea() <= areaMax &&
-                        offer.getKitchenArea() >= kitchenMin &&
-                        offer.getKitchenArea() <= kitchenMax &&
-                        offer.getAddress().getYear() >= yearMin &&
-                        offer.getAddress().getYear() <= yearMax &&
-                        offer.getFloor() >= floorMin &&
-                        offer.getFloor() <= floorMax &&
-                        offer.getAddress().getFloorNumber() >= floorNumberMin &&
-                        offer.getAddress().getFloorNumber() <= floorNumberMax)
+                            ((offer.getType().equals(typeFlat) == flat && flat) ||
+                            (offer.getType().equals(typeRoom) == room && room)) &&
+                            offer.getPrice() >= priceMin &&
+                            offer.getPrice() <= priceMax &&
+                            ((offer.getRoomNumber().equals(0) == studio && studio) ||
+                                    (offer.getRoomNumber() >= roomNumberMin &&
+                            offer.getRoomNumber() <= roomNumberMax)) &&
+                            offer.getArea() >= areaMin &&
+                            offer.getArea() <= areaMax &&
+                            offer.getKitchenArea() >= kitchenMin &&
+                            offer.getKitchenArea() <= kitchenMax &&
+                            offer.getAddress().getYear() >= yearMin &&
+                            offer.getAddress().getYear() <= yearMax &&
+                            offer.getFloor() >= floorMin &&
+                            offer.getFloor() <= floorMax &&
+                            offer.getAddress().getFloorNumber() >= floorNumberMin &&
+                            offer.getAddress().getFloorNumber() <= floorNumberMax)
                 .forEach(list::add);
         return list;
     }

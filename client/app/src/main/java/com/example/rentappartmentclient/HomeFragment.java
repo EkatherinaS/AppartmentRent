@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.rentappartmentclient.adapter.OfferAdapter;
 import com.example.rentappartmentclient.adapter.ItemClickListener;
+import com.example.rentappartmentclient.retrofit.DataManager;
 import com.example.rentappartmentclient.retrofit.FavoriteListManager;
 import com.example.rentappartmentclient.model.database.Offer;
 import com.example.rentappartmentclient.retrofit.OfferListManager;
@@ -38,27 +39,25 @@ public class HomeFragment extends Fragment {
         context = mainView.getContext();
         rvOffers = mainView.findViewById(R.id.rvOffers);
         rvOffers.setLayoutManager(new LinearLayoutManager(context));
-
-        FavoriteListManager.setContext(context);
-        OfferListManager.setContext(context, this);
-
-        OfferListManager.getInstance().loadOffers();
+        populateListView(DataManager.getInstance().getOfferList());
 
         return mainView;
     }
 
     public void populateListView(List<Offer> offerList) {
-        itemClickListener=new ItemClickListener() {
-            @Override
-            public void onClick(int position, Offer value) {
-                offerFragment = new OfferFragment(offerList.get(position));
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, offerFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        };
-        OfferAdapter offerAdapter = new OfferAdapter(offerList, itemClickListener);
-        rvOffers.setAdapter(offerAdapter);
+        if (rvOffers != null) {
+            itemClickListener=new ItemClickListener() {
+                @Override
+                public void onClick(int position, Offer value) {
+                    offerFragment = new OfferFragment(offerList.get(position));
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, offerFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            };
+            OfferAdapter offerAdapter = new OfferAdapter(offerList, itemClickListener);
+            rvOffers.setAdapter(offerAdapter);
+        }
     }
 }

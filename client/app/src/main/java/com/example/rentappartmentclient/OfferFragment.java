@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.rentappartmentclient.retrofit.DataManager;
 import com.example.rentappartmentclient.retrofit.UserManager;
 import com.example.rentappartmentclient.model.database.Favorite;
 import com.example.rentappartmentclient.retrofit.FavoriteListManager;
@@ -101,7 +102,7 @@ public class OfferFragment extends Fragment {
     }
 
     private boolean getFavorite() {
-        return FavoriteListManager.getInstance().checkIfFavorite(offer);
+        return DataManager.getInstance().getFavoriteListManager().checkIfFavorite(offer);
     }
 
     @Override
@@ -156,12 +157,12 @@ public class OfferFragment extends Fragment {
                 {
                     Favorite favorite = new Favorite();
                     favorite.setOffer(offer);
-                    favorite.setUser(UserManager.getInstance().getCurrentUser());
+                    favorite.setUser(DataManager.getInstance().getUser());
 
                     if (tbFavorite.isChecked()) {
-                        FavoriteListManager.getInstance().saveFavorite(favorite);
+                        DataManager.getInstance().getFavoriteListManager().saveFavorite(favorite);
                     } else {
-                        FavoriteListManager.getInstance().deleteFavorite(favorite);
+                        DataManager.getInstance().getFavoriteListManager().deleteFavorite(favorite);
                     }
                 }
             });

@@ -5,31 +5,31 @@ import android.widget.Toast;
 
 import com.example.rentappartmentclient.model.PreferenceManager;
 import com.example.rentappartmentclient.model.database.User;
+import com.example.rentappartmentclient.retrofit.api.FavoriteApi;
 import com.example.rentappartmentclient.retrofit.api.UserApi;
+
+import java.util.ArrayList;
+import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserManager {
-    private User currentUser;
-    private static Context context;
-    private static UserManager instance;
+public class UserManager extends Observable {
+    private final Context context;
+    private final UserApi userApi;
     private final PreferenceManager preferenceManager;
+    private User currentUser;
 
-    public static void setMainActivity(Context context) {
-        UserManager.context = context;
+
+    public UserManager(Context context) {
+        this.context = context;
+        this.userApi = RetrofitService.getRetrofit().create(UserApi.class);
+        this.preferenceManager = new PreferenceManager(context);
     }
 
-    public static UserManager getInstance() {
-        if (instance == null) {
-            instance = new UserManager();
-        }
-        return instance;
-    }
-
-    private UserManager() {
-        preferenceManager = new PreferenceManager(context);
+    public void loadUser() {
+        checkUser(preferenceManager.getUserId());
     }
 
     public User getCurrentUser() {
@@ -37,29 +37,23 @@ public class UserManager {
     }
 
 
-    public void checkUserFromPreferenceManager() {
-        int userId = preferenceManager.getUserId();
-        checkUser(userId);
-    }
-
     private void updateUser(User user) {
         preferenceManager.saveUserId(user.getUserId());
         currentUser = user;
-        FavoriteListManager.getInstance().getAllFavorite(user.getUserId());
+        setChanged();
+        notifyObservers();
     }
 
-
     private void checkUser(int userId) {
-        UserApi userApi = RetrofitService.getRetrofit().create(UserApi.class);
         userApi.checkUser(userId)
                 .enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.body() != null) {
-                            Toast.makeText(context, "Найден пользователь: " + response.body().getUserId(), Toast.LENGTH_LONG).show();
                             updateUser(response.body());
+                            Toast.makeText(context, "Найден пользователь: " + response.body().getUserId(), Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(context, "Пользователь не найден", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Создан новый пользователь", Toast.LENGTH_LONG).show();
                             createUser();
                         }
                     }
@@ -73,14 +67,13 @@ public class UserManager {
     }
 
     private void createUser() {
-        UserApi userApi = RetrofitService.getRetrofit().create(UserApi.class);
         userApi.createUser()
                 .enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.body() != null) {
-                            Toast.makeText(context, "Создан пользователь: " + response.body().getUserId(), Toast.LENGTH_LONG).show();
                             updateUser(response.body());
+                            Toast.makeText(context, "Создан пользователь: " + response.body().getUserId(), Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(context, "Не удалось создать пользователя", Toast.LENGTH_LONG).show();
                         }

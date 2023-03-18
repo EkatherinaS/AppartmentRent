@@ -3,12 +3,15 @@ package com.example.rentappartmentclient;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.rentappartmentclient.retrofit.DataManager;
 import com.example.rentappartmentclient.retrofit.UserManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,11 +20,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView bottomNavigationView;
     private static ImageView sortButton;
     private static Toolbar toolbar;
-    FavoritesFragment favoritesFragment = new FavoritesFragment();
-    FiltersFragment filtersFragment = new FiltersFragment();
-    HomeFragment homeFragment = new HomeFragment();
-    LocationFragment locationFragment = new LocationFragment();
-    SortFragment sortFragment = new SortFragment();
+    private final DataManager dataManager = DataManager.getInstance();
 
     public static void setHomeToolbar() {
         toolbar.setTitle(R.string.home);
@@ -37,25 +36,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.favorite:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, favoritesFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getFavoritesFragment()).commit();
                 setSettingsToolbar(getResources().getString(R.string.favorites));
                 return true;
 
             case R.id.home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getHomeFragment()).commit();
                 setHomeToolbar();
                 return true;
 
             case R.id.filter:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, filtersFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getFiltersFragment()).commit();
                 setSettingsToolbar(getResources().getString(R.string.filters));
                 return true;
 
             case R.id.location:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, locationFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getLocationFragment()).commit();
                 setSettingsToolbar(getResources().getString(R.string.location));
                 return true;
         }
@@ -67,16 +65,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserManager.setMainActivity(this);
-        UserManager.getInstance().checkUserFromPreferenceManager();
-
+        dataManager.createManagers(this);
+        
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-                setHomeToolbar();
+                Fragment currentFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
+
+                if (bottomNavigationView.getSelectedItemId() == R.id.favorite &&
+                        currentFragment != dataManager.getFavoritesFragment()) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getFavoritesFragment()).commit();
+                    setSettingsToolbar(getResources().getString(R.string.favorites));
+                } else if (bottomNavigationView.getSelectedItemId() == R.id.filter) {
+                    setHomeFragment();
+                    dataManager.updateFilters();
+                } else if (bottomNavigationView.getSelectedItemId() == R.id.location) {
+                    setHomeFragment();
+                    dataManager.updateLocation();
+                } else {
+                    setHomeFragment();
+                    dataManager.updateSort();
+                }
             }
         });
 
@@ -84,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, sortFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getSortFragment()).commit();
                 setSettingsToolbar(getResources().getString(R.string.sort));
             }
         });
@@ -92,5 +103,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
+    }
+
+    private void setHomeFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, dataManager.getHomeFragment()).commit();
+        bottomNavigationView.setSelectedItemId(R.id.home);
+        setHomeToolbar();
     }
 }
