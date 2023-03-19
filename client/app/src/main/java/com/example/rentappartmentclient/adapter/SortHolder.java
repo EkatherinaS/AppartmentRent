@@ -14,7 +14,7 @@ import com.example.rentappartmentclient.R;
 public class SortHolder  extends RecyclerView.ViewHolder{
 
     public Button name;
-    public TextView sort;
+    public ToggleButton sort;
 
     public SortHolder(@NonNull View itemView) {
         super(itemView);

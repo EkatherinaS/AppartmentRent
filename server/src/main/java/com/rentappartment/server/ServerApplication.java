@@ -1,5 +1,6 @@
 package com.rentappartment.server;
 
+import com.rentappartment.server.model.Filter.FilterDao;
 import com.rentappartment.server.model.Image.ImageDao;
 import com.rentappartment.server.model.Offer.OfferDao;
 import com.rentappartment.server.model.Parsing.EtagiParser;
@@ -34,6 +35,7 @@ public class ServerApplication {
 
 	public static void main(String[] args) {
 		applicationContext = SpringApplication.run(ServerApplication.class, args);
+		applicationContext.getBean(FilterDao.class).updateFilters();
 		Date date = new Date();
 		new EtagiParser().parse();
 		applicationContext.getBean(OfferDao.class).deleteOldOffers(date);

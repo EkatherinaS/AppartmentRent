@@ -1,7 +1,6 @@
 package com.example.rentappartmentclient.retrofit;
 
 import android.content.Context;
-import android.widget.Filter;
 import android.widget.Toast;
 
 import com.example.rentappartmentclient.FavoritesFragment;
@@ -10,6 +9,7 @@ import com.example.rentappartmentclient.HomeFragment;
 import com.example.rentappartmentclient.LocationFragment;
 import com.example.rentappartmentclient.SortFragment;
 import com.example.rentappartmentclient.model.OfferFilters;
+import com.example.rentappartmentclient.model.database.Filter;
 import com.example.rentappartmentclient.model.database.Offer;
 import com.example.rentappartmentclient.model.database.User;
 
@@ -22,11 +22,14 @@ public class DataManager implements Observer {
 
     private List<Offer> offerList;
     private List<Offer> favoriteList;
+
+    private List<Filter> filterList;
     private User user;
 
     private UserManager userManager;
     private OfferListManager offerListManager;
     private FavoriteListManager favoriteListManager;
+    private FilterManager filterListManager;
 
     private Context context;
     private static DataManager instance;
@@ -34,7 +37,6 @@ public class DataManager implements Observer {
     private FavoritesFragment favoritesFragment ;
     private FiltersFragment filtersFragment;
     private HomeFragment homeFragment;
-
     private LocationFragment locationFragment;
     private SortFragment sortFragment;
 
@@ -42,9 +44,11 @@ public class DataManager implements Observer {
     public List<Offer> getOfferList() {
         return offerList;
     }
-
     public List<Offer> getFavoriteList() {
         return favoriteList;
+    }
+    public List<Filter> getFilterList() {
+        return filterList;
     }
 
     public User getUser() {
@@ -62,20 +66,38 @@ public class DataManager implements Observer {
         return favoriteListManager;
     }
 
+    public FilterManager getFilterListManager() {
+        return filterListManager;
+    }
 
     public FavoritesFragment getFavoritesFragment() {
+        if (favoritesFragment == null) {
+            favoritesFragment = new FavoritesFragment();
+        }
         return favoritesFragment;
     }
     public FiltersFragment getFiltersFragment() {
+        if (filtersFragment == null) {
+            filtersFragment = new FiltersFragment();
+        }
         return filtersFragment;
     }
     public HomeFragment getHomeFragment() {
+        if (homeFragment == null) {
+            homeFragment = new HomeFragment();
+        }
         return homeFragment;
     }
     public LocationFragment getLocationFragment() {
+        if (locationFragment == null) {
+            locationFragment = new LocationFragment();
+        }
         return locationFragment;
     }
     public SortFragment getSortFragment() {
+        if (sortFragment == null) {
+            sortFragment = new SortFragment();
+        }
         return sortFragment;
     }
 
@@ -91,16 +113,14 @@ public class DataManager implements Observer {
         user = new User();
         offerList = new ArrayList<>();
         favoriteList = new ArrayList<>();
-
-        favoritesFragment = new FavoritesFragment();
-        filtersFragment = new FiltersFragment();
-        homeFragment = new HomeFragment();
-        locationFragment = new LocationFragment();
-        sortFragment = new SortFragment();
     }
 
     public void createManagers(Context context) {
         this.context = context;
+
+        filterListManager = new FilterManager(context);
+        filterListManager.addObserver(this);
+        filterListManager.loadFilterList();
 
         userManager = new UserManager(context);
         userManager.addObserver(this);
@@ -112,11 +132,18 @@ public class DataManager implements Observer {
     public void update(Observable o, Object arg) {
         if (userManager.equals(o)) {
             onUserUpdate();
-        } else if (offerListManager.equals(o)) {
-            onOfferListUpdate();
+        } else if (filterListManager.equals(o)) {
+            onFilterListUpdate();
         } else if (favoriteListManager.equals(o)) {
             onFavoriteListUpdate();
+        } else if (offerListManager.equals(o)) {
+            onOfferListUpdate();
         }
+    }
+
+    private void onFilterListUpdate() {
+        Toast.makeText(context, "onFilterListUpdate", Toast.LENGTH_LONG).show();
+        filterList = filterListManager.getFilterList();
     }
 
     private void onUserUpdate() {
@@ -131,25 +158,43 @@ public class DataManager implements Observer {
         offerListManager.addObserver(this);
         offerListManager.loadOffers();
     }
-
     private void onOfferListUpdate() {
         Toast.makeText(context, "onOfferListUpdate", Toast.LENGTH_LONG).show();
         offerList = offerListManager.getOfferList();
 
-        homeFragment.populateListView(offerList);
+        getHomeFragment().populateListView(offerList);
 
         OfferFilters.setValues();
-        filtersFragment.setValues();
-        filtersFragment.setListeners();
+        if (filtersFragment != null) {
+            filtersFragment.setValues();
+            filtersFragment.setListeners();
+        }
     }
-
     private void onFavoriteListUpdate() {
         Toast.makeText(context, "onFavoriteListUpdate", Toast.LENGTH_LONG).show();
         favoriteList = favoriteListManager.getFavoriteList();
-        favoritesFragment.populateListView(favoriteList);
+        if (favoritesFragment != null) {
+            favoritesFragment.populateListView(favoriteList);
+        }
     }
 
-    public void updateFilters() {
+
+    public void updateOfferListWithOptions() {
+        if (sortFragment != null && filtersFragment != null) {
+            updateFilterSort();
+        } else if (sortFragment != null) {
+            updateSort();
+        } else if (filtersFragment != null) {
+            updateFilter();
+        }
+    }
+
+
+    private void updateSort() {
+        offerListManager.loadSortedOffers(sortFragment.getFilterList());
+    }
+
+    private void updateFilter() {
         offerListManager.loadFilteredOffers(filtersFragment.getTypeFlat(), filtersFragment.getTypeRoom(),
                 filtersFragment.getPriceMin(), filtersFragment.getPriceMax(),
                 filtersFragment.getTypeStudio(),
@@ -161,9 +206,18 @@ public class DataManager implements Observer {
                 filtersFragment.getFloorNumberMin(), filtersFragment.getFloorNumberMax());
     }
 
-    public void updateSort() {
+    private void updateFilterSort() {
+        offerListManager.loadSortedFilteredOffers(filtersFragment.getTypeFlat(), filtersFragment.getTypeRoom(),
+                filtersFragment.getPriceMin(), filtersFragment.getPriceMax(),
+                filtersFragment.getTypeStudio(),
+                filtersFragment.getRoomNumberMin(), filtersFragment.getRoomNumberMax(),
+                filtersFragment.getSpaceMin(), filtersFragment.getSpaceMax(),
+                filtersFragment.getKitchenSpaceMin(), filtersFragment.getKitchenSpaceMax(),
+                filtersFragment.getYearMin(), filtersFragment.getYearMax(),
+                filtersFragment.getFloorMin(), filtersFragment.getFloorMax(),
+                filtersFragment.getFloorNumberMin(), filtersFragment.getFloorNumberMax(),
+                sortFragment.getFilterList());
     }
-
     public void updateLocation() {
     }
 }

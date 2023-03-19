@@ -17,10 +17,10 @@
 </item>
 <item>
     <selector>
-        <item android:state_checked="false"
+        <item android:state_checked="true"
             android:drawable="@drawable/ic_sort_descending" />
 
-        <item android:state_checked="true"
+        <item android:state_checked="false"
             android:drawable="@drawable/ic_sort_ascending" />
     </selector>
 </item>

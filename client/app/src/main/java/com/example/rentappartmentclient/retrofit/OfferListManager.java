@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.rentappartmentclient.HomeFragment;
 import com.example.rentappartmentclient.model.OfferFilters;
+import com.example.rentappartmentclient.model.database.Filter;
 import com.example.rentappartmentclient.model.database.Offer;
 import com.example.rentappartmentclient.model.database.User;
 import com.example.rentappartmentclient.retrofit.api.FavoriteApi;
@@ -60,6 +61,55 @@ public class OfferListManager extends Observable {
                 });
     }
 
+    public void loadSortedFilteredOffers(boolean flat, boolean room, int priceMin, int priceMax,
+                                         boolean studio, int roomNumberMin, int roomNumberMax,
+                                         int areaMin, int areaMax, int kitchenMin, int kitchenMax,
+                                         int yearMin, int yearMax, int floorMin, int floorMax,
+                                         int floorNumberMin, int floorNumberMax,
+                                         List<Filter> prioritizedFilters) {
+        offerApi.getFilteredSortedOffers(flat, room, priceMin, priceMax, studio, roomNumberMin,
+                        roomNumberMax, areaMin, areaMax, kitchenMin, kitchenMax, yearMin,
+                        yearMax, floorMin, floorMax, floorNumberMin, floorNumberMax,
+                        prioritizedFilters)
+                .enqueue(new Callback<List<Offer>>() {
+                    @Override
+                    public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
+                        if (response.body() != null) {
+                            updateOfferList(response.body());
+                            Toast.makeText(context, "Загружен список предложений с фильтрами и сортировкой", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Ошибка загрузки списка предложений с фильтрами и сортировкой", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Offer>> call, Throwable t) {
+                        Toast.makeText(context, "Ошибка загрузки с фильтрами и сортировкой", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+    }
+
+    public void loadSortedOffers(List<Filter> prioritizedFilters) {
+        offerApi.getSortedOffers(prioritizedFilters)
+                .enqueue(new Callback<List<Offer>>() {
+                    @Override
+                    public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
+                        if (response.body() != null) {
+                            updateOfferList(response.body());
+                            Toast.makeText(context, "Загружен список предложений с сортировкой", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Ошибка загрузки списка предложений с сортировкой", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Offer>> call, Throwable t) {
+                        Toast.makeText(context, "Ошибка загрузки с сортировкой", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     public void loadFilteredOffers(boolean flat, boolean room, int priceMin, int priceMax,
                                    boolean studio, int roomNumberMin, int roomNumberMax,
                                    int areaMin, int areaMax, int kitchenMin, int kitchenMax,
@@ -84,9 +134,5 @@ public class OfferListManager extends Observable {
                         Toast.makeText(context, "Ошибка загрузки с фильтрами", Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    public void loadSortedOffers() {
-
     }
 }

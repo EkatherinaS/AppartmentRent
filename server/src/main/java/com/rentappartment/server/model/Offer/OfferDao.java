@@ -1,10 +1,13 @@
 package com.rentappartment.server.model.Offer;
 
+import com.rentappartment.server.model.Filter.Filter;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -107,5 +110,29 @@ public class OfferDao {
                             offer.getAddress().getFloorNumber() <= floorNumberMax)
                 .forEach(list::add);
         return list;
+    }
+
+    public List<Offer> getSortedOffers(List<Filter> prioritizedFilters) {
+        List<Offer> list = new ArrayList<>();
+        Streamable.of(repository.findAll()).forEach(list::add);
+        return list.stream().sorted(new OfferComparator(prioritizedFilters)).toList();
+    }
+    
+    public List<Offer> getFilteredSortedOffers(boolean flat, boolean room,
+                                               int priceMin, int priceMax,
+                                               boolean studio,
+                                               int roomNumberMin, int roomNumberMax,
+                                               int areaMin, int areaMax,
+                                               int kitchenMin, int kitchenMax,
+                                               int yearMin, int yearMax,
+                                               int floorMin, int floorMax,
+                                               int floorNumberMin, int floorNumberMax,
+                                               List<Filter> prioritizedFilters) {
+
+        List<Offer> list = getFilteredOffers(flat, room, priceMin, priceMax, studio,
+                roomNumberMin, roomNumberMax, areaMin, areaMax, kitchenMin, kitchenMax,
+                yearMin, yearMax, floorMin, floorMax, floorNumberMin, floorNumberMax);
+
+        return list.stream().sorted(new OfferComparator(prioritizedFilters)).toList();
     }
 }

@@ -3,13 +3,15 @@ package com.example.rentappartmentclient.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentappartmentclient.R;
-import com.example.rentappartmentclient.model.Filter;
+import com.example.rentappartmentclient.model.database.Filter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +36,13 @@ implements RecyclerViewRowTouchHelperContact{
     public void onBindViewHolder(@NonNull SortHolder holder, int position) {
         Filter filter = filterList.get(position);
         holder.name.setText(filter.getName());
-        holder.sort.setEnabled(filter.isSortAscending());
+        holder.sort.setChecked(filter.isSortAscending());
+
+        holder.sort.setOnCheckedChangeListener(new  CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filter.setSortAscending(isChecked);
+            }
+        });
     }
 
     @Override
