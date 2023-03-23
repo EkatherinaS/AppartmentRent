@@ -1,7 +1,7 @@
 package com.example.rentappartmentclient.retrofit;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.example.rentappartmentclient.FavoritesFragment;
 import com.example.rentappartmentclient.FiltersFragment;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
 
 public class DataManager implements Observer {
 
@@ -73,30 +74,35 @@ public class DataManager implements Observer {
     public FavoritesFragment getFavoritesFragment() {
         if (favoritesFragment == null) {
             favoritesFragment = new FavoritesFragment();
+            Log.i("DataManager", "FavoritesFragment created");
         }
         return favoritesFragment;
     }
     public FiltersFragment getFiltersFragment() {
         if (filtersFragment == null) {
             filtersFragment = new FiltersFragment();
+            Log.i("DataManager", "FiltersFragment created");
         }
         return filtersFragment;
     }
     public HomeFragment getHomeFragment() {
         if (homeFragment == null) {
             homeFragment = new HomeFragment();
+            Log.i("DataManager", "HomeFragment created");
         }
         return homeFragment;
     }
     public LocationFragment getLocationFragment() {
         if (locationFragment == null) {
             locationFragment = new LocationFragment();
+            Log.i("DataManager", "LocationFragment created");
         }
         return locationFragment;
     }
     public SortFragment getSortFragment() {
         if (sortFragment == null) {
             sortFragment = new SortFragment();
+            Log.i("DataManager", "SortFragment created");
         }
         return sortFragment;
     }
@@ -105,6 +111,7 @@ public class DataManager implements Observer {
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
+            Log.i("DataManager", "DataManager created");
         }
         return instance;
     }
@@ -120,10 +127,12 @@ public class DataManager implements Observer {
 
         filterListManager = new FilterManager(context);
         filterListManager.addObserver(this);
+        Log.i("DataManager", "FilterManager created");
         filterListManager.loadFilterList();
 
         userManager = new UserManager(context);
         userManager.addObserver(this);
+        Log.i("DataManager", "UserManager created");
         userManager.loadUser();
     }
 
@@ -142,36 +151,34 @@ public class DataManager implements Observer {
     }
 
     private void onFilterListUpdate() {
-        Toast.makeText(context, "onFilterListUpdate", Toast.LENGTH_LONG).show();
+        Log.i("DataManager", "Observable changed: filterListManager");
         filterList = filterListManager.getFilterList();
     }
 
     private void onUserUpdate() {
-        Toast.makeText(context, "onUserUpdate", Toast.LENGTH_LONG).show();
+        Log.i("DataManager", "Observable changed: userManager");
         user = userManager.getCurrentUser();
 
-        favoriteListManager = new FavoriteListManager(context, user);
+        favoriteListManager = new FavoriteListManager(user);
         favoriteListManager.addObserver(this);
+        Log.i("DataManager", "FavoriteListManager created");
         favoriteListManager.loadFavoriteList();
 
         offerListManager = new OfferListManager(context);
         offerListManager.addObserver(this);
+        Log.i("DataManager", "OfferListManager created");
         offerListManager.loadOffers();
     }
     private void onOfferListUpdate() {
-        Toast.makeText(context, "onOfferListUpdate", Toast.LENGTH_LONG).show();
+        Log.i("DataManager", "Observable changed: offerListManager");
         offerList = offerListManager.getOfferList();
 
         getHomeFragment().populateListView(offerList);
 
         OfferFilters.setValues();
-        if (filtersFragment != null) {
-            filtersFragment.setValues();
-            filtersFragment.setListeners();
-        }
     }
     private void onFavoriteListUpdate() {
-        Toast.makeText(context, "onFavoriteListUpdate", Toast.LENGTH_LONG).show();
+        Log.i("DataManager", "Observable changed: favoriteListManager");
         favoriteList = favoriteListManager.getFavoriteList();
         if (favoritesFragment != null) {
             favoritesFragment.populateListView(favoriteList);
@@ -191,10 +198,12 @@ public class DataManager implements Observer {
 
 
     private void updateSort() {
+        Log.i("DataManager", "Offer list update: updateSort");
         offerListManager.loadSortedOffers(sortFragment.getFilterList());
     }
 
     private void updateFilter() {
+        Log.i("DataManager", "Offer list update: updateFilter");
         offerListManager.loadFilteredOffers(filtersFragment.getTypeFlat(), filtersFragment.getTypeRoom(),
                 filtersFragment.getPriceMin(), filtersFragment.getPriceMax(),
                 filtersFragment.getTypeStudio(),
@@ -207,6 +216,7 @@ public class DataManager implements Observer {
     }
 
     private void updateFilterSort() {
+        Log.i("DataManager", "Offer list update: updateFilterSort");
         offerListManager.loadSortedFilteredOffers(filtersFragment.getTypeFlat(), filtersFragment.getTypeRoom(),
                 filtersFragment.getPriceMin(), filtersFragment.getPriceMax(),
                 filtersFragment.getTypeStudio(),
@@ -218,6 +228,6 @@ public class DataManager implements Observer {
                 filtersFragment.getFloorNumberMin(), filtersFragment.getFloorNumberMax(),
                 sortFragment.getFilterList());
     }
-    public void updateLocation() {
-    }
+
+    public void updateLocation() {}
 }

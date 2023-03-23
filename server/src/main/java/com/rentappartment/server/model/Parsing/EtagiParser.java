@@ -23,9 +23,6 @@ import java.util.Objects;
 
 import static com.rentappartment.server.ServerApplication.*;
 
-//String url = "https://perm.n1.ru/snyat/dolgosrochno/kvartiry/";
-//Elements links = doc.select("a[href*=/view/]");
-
 @Service
 public class EtagiParser extends parserClass {
 
@@ -50,7 +47,6 @@ public class EtagiParser extends parserClass {
 
     private static final String imagesButtonXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div/div/div/div/div[2]/button";
     private static final String imagePatternXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div[2]/div/div/div[1]/div[2]/div[1]/div/div[%s]/div/div/div/div[1]/div/div/img";
-    private static final String nextImageButtonXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div[2]/div/div/div[1]/div[2]/button[2]";
     private static final String prevImageButtonXpath = "/html/body/div[1]/main/div/div[2]/section[1]/div[1]/div/div[2]/div/div/div[1]/div[2]/button[1]";
     private static final String addressClass = "div.Vs6MQ";
     private static final String pagesNumberClass = "x0SgG Q7VHf";

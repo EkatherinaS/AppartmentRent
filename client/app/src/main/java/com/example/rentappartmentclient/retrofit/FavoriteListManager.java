@@ -1,12 +1,15 @@
 package com.example.rentappartmentclient.retrofit;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rentappartmentclient.model.database.Favorite;
 import com.example.rentappartmentclient.model.database.Offer;
 import com.example.rentappartmentclient.model.database.User;
 import com.example.rentappartmentclient.retrofit.api.FavoriteApi;
+
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +21,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FavoriteListManager extends Observable {
-    private final Context context;
     private final FavoriteApi favoriteApi;
     private final User user;
     private List<Offer> favoriteList;
 
 
-    public FavoriteListManager(Context context, User user) {
-        this.context = context;
+    public FavoriteListManager(User user) {
         this.user = user;
         this.favoriteList = new ArrayList<>();
         this.favoriteApi = RetrofitService.getRetrofit().create(FavoriteApi.class);
@@ -42,15 +43,15 @@ public class FavoriteListManager extends Observable {
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
                         if (response.body() != null) {
                             updateFavoriteList(response.body());
-                            Toast.makeText(context, "Получен список избранного", Toast.LENGTH_LONG).show();
+                            Log.i("FavoriteListManager", "FavoriteList loaded: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка получения списка", Toast.LENGTH_LONG).show();
+                            Log.w("FavoriteListManager", "Error loading FavoriteList: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка получения списка", Toast.LENGTH_LONG).show();
+                        Log.w("FavoriteListManager", "Error loading FavoriteList: onFailure");
                     }
                 });
     }
@@ -60,6 +61,7 @@ public class FavoriteListManager extends Observable {
         this.favoriteList = favoriteList;
         setChanged();
         notifyObservers();
+        Log.i("FavoriteListManager", "FavoriteList updated");
     }
 
 
@@ -80,15 +82,15 @@ public class FavoriteListManager extends Observable {
                     public void onResponse(Call<Favorite> call, Response<Favorite> response) {
                         if (response.body() != null) {
                             addFavorite(response.body().getOffer());
-                            Toast.makeText(context, "Добавлено в избранное", Toast.LENGTH_LONG).show();
+                            Log.i("FavoriteListManager", "Added to favorite: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка добавления в избранное", Toast.LENGTH_LONG).show();
+                            Log.w("FavoriteListManager", "Error adding to favorite: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Favorite> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка добавления в избранное", Toast.LENGTH_LONG).show();
+                        Log.w("FavoriteListManager", "Error adding to favorite: onFailure");
                     }
                 });
     }
@@ -100,16 +102,16 @@ public class FavoriteListManager extends Observable {
                     public void onResponse(Call<Favorite> call, Response<Favorite> response) {
                         if (response.body() != null) {
                             deleteFavorite(response.body().getOffer());
-                            Toast.makeText(context, "Удалено из избранного", Toast.LENGTH_LONG).show();
+                            Log.i("FavoriteListManager", "Deleted from favorite: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка удаления из избранного", Toast.LENGTH_LONG).show();
+                            Log.w("FavoriteListManager", "Error deleting from favorite: onResponse null");
                         }
 
                     }
 
                     @Override
                     public void onFailure(Call<Favorite> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка удаления из избранного", Toast.LENGTH_LONG).show();
+                        Log.w("FavoriteListManager", "Error deleting from favorite: onFailure");
                     }
                 });
     }
@@ -119,6 +121,7 @@ public class FavoriteListManager extends Observable {
         favoriteList.add(offer);
         setChanged();
         notifyObservers();
+        Log.i("FavoriteListManager", "Added to favorite: " + offer.getId());
     }
 
     private void deleteFavorite(Offer offer) {
@@ -130,5 +133,6 @@ public class FavoriteListManager extends Observable {
         }
         setChanged();
         notifyObservers();
+        Log.i("FavoriteListManager", "Deleted from favorite: " + offer.getId());
     }
 }

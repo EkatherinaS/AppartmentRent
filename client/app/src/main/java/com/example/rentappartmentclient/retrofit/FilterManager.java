@@ -1,6 +1,7 @@
 package com.example.rentappartmentclient.retrofit;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rentappartmentclient.model.database.Filter;
@@ -42,15 +43,15 @@ public class FilterManager  extends Observable {
                     public void onResponse(Call<List<Filter>> call, Response<List<Filter>> response) {
                         if (response.body() != null) {
                             updateFilterList(response.body());
-                            Toast.makeText(context, "Загружены фильтры", Toast.LENGTH_LONG).show();
+                            Log.i("FilterManager", "FilterList loaded: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка загрузки фильтров", Toast.LENGTH_LONG).show();
+                            Log.w("FilterManager", "FilterList loaded: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Filter>> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка загрузки фильтров", Toast.LENGTH_LONG).show();
+                        Log.w("FilterManager", "FilterList loaded: onFailure");
                     }
                 });
     }

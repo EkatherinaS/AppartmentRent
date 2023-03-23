@@ -1,5 +1,6 @@
 package com.example.rentappartmentclient.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentappartmentclient.R;
 import com.example.rentappartmentclient.model.database.Filter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 public class SortAdapter  extends RecyclerView.Adapter<SortHolder>
 implements RecyclerViewRowTouchHelperContact{
 
-    private List<Filter> filterList;
+    private final List<Filter> filterList;
 
     public SortAdapter(List<Filter> filterList) {
         this.filterList = filterList;
@@ -41,6 +42,7 @@ implements RecyclerViewRowTouchHelperContact{
         holder.sort.setOnCheckedChangeListener(new  CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 filter.setSortAscending(isChecked);
+                Log.i("SortAdapter", "checked changed " + filter.getName() + " to " + isChecked);
             }
         });
     }
@@ -62,6 +64,7 @@ implements RecyclerViewRowTouchHelperContact{
             }
         }
         notifyItemMoved(from, to);
+        Log.i("SortAdapter", "row moved from " + from + " to " + to);
     }
 
     @Override

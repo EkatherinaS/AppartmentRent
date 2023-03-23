@@ -40,7 +40,7 @@ public class SortFragment extends Fragment {
             for (int i = 0; i < recyclerView.getChildCount(); i++) {
                 SortHolder holder = (SortHolder) recyclerView.findViewHolderForAdapterPosition(i);
                 if (holder != null) {
-                    list.add(new Filter(holder.name.getText().toString(), holder.sort.isChecked(), i));
+                    list.add(new Filter(holder.name.getText().toString(), !holder.sort.isChecked(), i));
                 }
             }
             return list;

@@ -10,13 +10,10 @@ import android.view.ViewGroup;
 
 public class LocationFragment extends Fragment {
 
-    public LocationFragment() {
-        // require a empty public constructor
-    }
+    public LocationFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_location, container, false);
     }
 }

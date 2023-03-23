@@ -1,5 +1,7 @@
 package com.example.rentappartmentclient.adapter;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -32,6 +34,8 @@ public class RecyclerRowMoveCallback extends ItemTouchHelper.Callback{
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         this.touchHelperContact.onRowMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        Log.i("RecyclerRowMoveCallback",
+                "moved from " + viewHolder.getAdapterPosition() + " to " + target.getAdapterPosition());
         return true;
     }
 

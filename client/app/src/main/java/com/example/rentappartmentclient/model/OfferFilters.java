@@ -11,8 +11,6 @@ public class OfferFilters {
     public static boolean flat = true;
     public static boolean room = true;
     public static boolean studio = true;
-    public static boolean websiteEtagi = true;
-    public static boolean websiteN1 = false;
     public static int priceMin = Integer.MAX_VALUE;
     public static int priceMax = -1;
     public static int roomNumberMin = Integer.MAX_VALUE;

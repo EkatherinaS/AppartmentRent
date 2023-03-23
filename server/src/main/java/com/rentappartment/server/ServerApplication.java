@@ -7,6 +7,8 @@ import com.rentappartment.server.model.Parsing.EtagiParser;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -19,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class ServerApplication {
 
 	public static ApplicationContext applicationContext;
+	private static final Logger applicatonLogger = LoggerFactory.getLogger(ServerApplication.class);
 
 	@Bean
 	public WebDriver webDriver() {
@@ -30,6 +33,7 @@ public class ServerApplication {
 		options.addArguments("--headless", "--remote-allow-origins=*", "--window-size=1920,1200","--ignore-certificate-errors");
 		WebDriver driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		applicatonLogger.info("Created webDriver");
 		return driver;
 	}
 
@@ -37,9 +41,10 @@ public class ServerApplication {
 		applicationContext = SpringApplication.run(ServerApplication.class, args);
 		applicationContext.getBean(FilterDao.class).updateFilters();
 		Date date = new Date();
+		applicatonLogger.info("Parsing started");
 		new EtagiParser().parse();
+		applicatonLogger.info("Parsing finished");
 		applicationContext.getBean(OfferDao.class).deleteOldOffers(date);
-
-		//applicationContext.getBean(WebDriver.class).close();
+		applicatonLogger.info("OfferDao - old offers deleted");
 	}
 }

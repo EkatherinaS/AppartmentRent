@@ -2,6 +2,7 @@ package com.example.rentappartmentclient.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class PreferenceManager {
 
@@ -25,6 +26,7 @@ public class PreferenceManager {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(key, value);
         editor.apply();
+        Log.i("PreferenceManager", "saved value " + value);
     }
 
     private int getValue(String key, int defaultValue) {

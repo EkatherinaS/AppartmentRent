@@ -2,7 +2,6 @@ package com.rentappartment.server.model.Offer;
 
 import com.rentappartment.server.model.Filter.Filter;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.springframework.context.annotation.Bean;
 
 import java.util.Collections;
 import java.util.Comparator;

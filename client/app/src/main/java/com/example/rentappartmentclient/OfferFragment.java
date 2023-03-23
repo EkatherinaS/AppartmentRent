@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,6 +159,7 @@ public class OfferFragment extends Fragment {
                     Favorite favorite = new Favorite();
                     favorite.setOffer(offer);
                     favorite.setUser(DataManager.getInstance().getUser());
+                    Log.i("OfferFragment", "Favorite changed " + offer.getId() + " to " + tbFavorite.isChecked());
 
                     if (tbFavorite.isChecked()) {
                         DataManager.getInstance().getFavoriteListManager().saveFavorite(favorite);
@@ -174,12 +176,13 @@ public class OfferFragment extends Fragment {
                 .enqueue(new Callback<List<Image>>() {
                     @Override
                     public void onResponse(Call<List<Image>> call, Response<List<Image>> response) {
+                        Log.i("OfferFragment", "Images loaded: onResponse");
                         populateListView(response.body());
                     }
 
                     @Override
                     public void onFailure(Call<List<Image>> call, Throwable t) {
-                        Toast.makeText(context, "Loading images failed", Toast.LENGTH_LONG).show();
+                        Log.w("OfferFragment", "Images loaded: onResponse null");
                     }
                 });
     }

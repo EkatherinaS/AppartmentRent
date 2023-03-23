@@ -1,6 +1,7 @@
 package com.example.rentappartmentclient.retrofit;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rentappartmentclient.HomeFragment;
@@ -48,15 +49,15 @@ public class OfferListManager extends Observable {
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
                         if (response.body() != null) {
                             updateOfferList(response.body());
-                            Toast.makeText(context, "Загружен список предложений", Toast.LENGTH_LONG).show();
+                            Log.i("OfferListManager", "OfferList loaded: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка загрузки списка предложений", Toast.LENGTH_LONG).show();
+                            Log.w("OfferListManager", "OfferList loaded: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка загрузки списка предложений", Toast.LENGTH_LONG).show();
+                        Log.w("OfferListManager", "OfferList loaded: onFailure");
                     }
                 });
     }
@@ -76,15 +77,15 @@ public class OfferListManager extends Observable {
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
                         if (response.body() != null) {
                             updateOfferList(response.body());
-                            Toast.makeText(context, "Загружен список предложений с фильтрами и сортировкой", Toast.LENGTH_LONG).show();
+                            Log.i("OfferListManager", "SortedFilteredOffers loaded: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка загрузки списка предложений с фильтрами и сортировкой", Toast.LENGTH_LONG).show();
+                            Log.w("OfferListManager", "SortedFilteredOffers loaded: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка загрузки с фильтрами и сортировкой", Toast.LENGTH_LONG).show();
+                        Log.w("OfferListManager", "SortedFilteredOffers loaded: onFailure");
                     }
                 });
 
@@ -97,15 +98,15 @@ public class OfferListManager extends Observable {
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
                         if (response.body() != null) {
                             updateOfferList(response.body());
-                            Toast.makeText(context, "Загружен список предложений с сортировкой", Toast.LENGTH_LONG).show();
+                            Log.i("OfferListManager", "SortedOffers loaded: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка загрузки списка предложений с сортировкой", Toast.LENGTH_LONG).show();
+                            Log.w("OfferListManager", "SortedOffers loaded: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка загрузки с сортировкой", Toast.LENGTH_LONG).show();
+                        Log.w("OfferListManager", "SortedOffers loaded: onFailure");
                     }
                 });
     }
@@ -123,15 +124,15 @@ public class OfferListManager extends Observable {
                     public void onResponse(Call<List<Offer>> call, Response<List<Offer>> response) {
                         if (response.body() != null) {
                             updateOfferList(response.body());
-                            Toast.makeText(context, "Загружен список предложений с фильтрами", Toast.LENGTH_LONG).show();
+                            Log.i("OfferListManager", "FilteredOffers loaded: onResponse");
                         } else {
-                            Toast.makeText(context, "Ошибка загрузки списка предложений с фильтрами", Toast.LENGTH_LONG).show();
+                            Log.w("OfferListManager", "FilteredOffers loaded: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Offer>> call, Throwable t) {
-                        Toast.makeText(context, "Ошибка загрузки с фильтрами", Toast.LENGTH_LONG).show();
+                        Log.w("OfferListManager", "FilteredOffers loaded: onFailure");
                     }
                 });
     }

@@ -1,6 +1,6 @@
 package com.example.rentappartmentclient.adapter;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentappartmentclient.R;
 import com.example.rentappartmentclient.retrofit.DataManager;
-import com.example.rentappartmentclient.retrofit.UserManager;
 import com.example.rentappartmentclient.model.database.Favorite;
-import com.example.rentappartmentclient.retrofit.FavoriteListManager;
 import com.example.rentappartmentclient.model.database.Offer;
 import com.squareup.picasso.Picasso;
 
@@ -21,10 +19,8 @@ import java.util.List;
 public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
 
     private final List<Offer> offerList;
-    private View view;
-    private Context context;
     private final ItemClickListener itemClickListener;
-    private int selectedPosition = -1;
+
 
     public OfferAdapter(List<Offer> offerList, ItemClickListener itemClickListener) {
         this.offerList = offerList;
@@ -35,8 +31,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
     @NonNull
     @Override
     public OfferHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        view = LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_offer, parent, false);
         return new OfferHolder(view);
     }
@@ -44,22 +39,13 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull OfferHolder holder, int position) {
+
         Offer offer = offerList.get(position);
 
-        String header;
-        int areaValue = offer.getArea().intValue();
-        if (areaValue == -1) header = offer.getRoomNumber() + "-комн. " + offer.getType();
-        else header = offer.getRoomNumber() + "-комн. " + offer.getType() + ", " + areaValue + "м²";
-
-        String address = offer.getAddress().getAddress();
-        if(address.contains(",")) {
-            address = address.substring(0, address.indexOf(",") + 1) + "\n" +
-                    address.substring(address.indexOf(",") + 2);
-        }
-
-        String price = offer.getPrice().intValue() + " ₽/мес.";
-
-        String imageURL = "https:" + offer.getMainImage();
+        String header = getHeader(offer);
+        String address = getAddress(offer);
+        String price = getPrice(offer);
+        String imageURL = getImageURL(offer);
 
         holder.header.setText(header);
         holder.address.setText(address);
@@ -76,8 +62,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
+                Log.i("OfferAdapter", "itemView clicked on position: " + position);
                 itemClickListener.onClick(position, offerList.get(position));
-                selectedPosition=position;
                 notifyDataSetChanged();
             }
         });
@@ -91,6 +77,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
                 Favorite favorite = new Favorite();
                 favorite.setOffer(offerList.get(holder.getAdapterPosition()));
                 favorite.setUser(DataManager.getInstance().getUser());
+                Log.i("OfferAdapter", "favorite clicked on position: " + holder.getAdapterPosition());
 
                 if (holder.favorite.isChecked()) {
                     DataManager.getInstance().getFavoriteListManager().saveFavorite(favorite);
@@ -106,5 +93,28 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferHolder> {
         if (offerList != null)
             return offerList.size();
         return 0;
+    }
+
+    private String getHeader(Offer offer) {
+        int areaValue = offer.getArea().intValue();
+        if (areaValue == -1) return offer.getRoomNumber() + "-комн. " + offer.getType();
+        else return offer.getRoomNumber() + "-комн. " + offer.getType() + ", " + areaValue + "м²";
+    }
+
+    private String getAddress(Offer offer) {
+        String result = offer.getAddress().getAddress();
+        if(result.contains(",")) {
+            return result.substring(0, result.indexOf(",") + 1) + "\n" +
+                    result.substring(result.indexOf(",") + 2);
+        }
+        return result;
+    }
+
+    private String getPrice(Offer offer) {
+        return offer.getPrice().intValue() + " ₽/мес.";
+    }
+
+    private String getImageURL(Offer offer) {
+        return "https:" + offer.getMainImage();
     }
 }

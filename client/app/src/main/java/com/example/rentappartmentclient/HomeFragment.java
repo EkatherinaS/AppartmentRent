@@ -23,19 +23,16 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     RecyclerView rvOffers;
-
     ItemClickListener itemClickListener;
     OfferFragment offerFragment;
 
     public static Context context;
 
-    private View mainView;
-
     public HomeFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_home, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_home, container, false);
         context = mainView.getContext();
         rvOffers = mainView.findViewById(R.id.rvOffers);
         rvOffers.setLayoutManager(new LinearLayoutManager(context));

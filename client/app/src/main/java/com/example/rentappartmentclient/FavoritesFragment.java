@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.example.rentappartmentclient.adapter.OfferAdapter;
 import com.example.rentappartmentclient.adapter.ItemClickListener;
 import com.example.rentappartmentclient.retrofit.DataManager;
-import com.example.rentappartmentclient.retrofit.FavoriteListManager;
 import com.example.rentappartmentclient.model.database.Offer;
 
 import java.util.List;
@@ -26,13 +25,10 @@ public class FavoritesFragment extends Fragment {
     OfferFragment offerFragment;
     Context context;
 
-    public FavoritesFragment() {
-        // require a empty public constructor
-    }
+    public FavoritesFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View mainView = inflater.inflate(R.layout.fragment_favorites, container, false);
         context = mainView.getContext();
 

@@ -1,6 +1,7 @@
 package com.example.rentappartmentclient.retrofit;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rentappartmentclient.model.PreferenceManager;
@@ -51,16 +52,16 @@ public class UserManager extends Observable {
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.body() != null) {
                             updateUser(response.body());
-                            Toast.makeText(context, "Найден пользователь: " + response.body().getUserId(), Toast.LENGTH_LONG).show();
+                            Log.i("OfferListManager", "checkUser: onResponse");
                         } else {
-                            Toast.makeText(context, "Создан новый пользователь", Toast.LENGTH_LONG).show();
+                            Log.w("OfferListManager", "checkUser: onResponse null");
                             createUser();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(context, "Пользователь не найден", Toast.LENGTH_LONG).show();
+                        Log.w("OfferListManager", "checkUser: onFailure");
                         createUser();
                     }
                 });
@@ -73,15 +74,15 @@ public class UserManager extends Observable {
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.body() != null) {
                             updateUser(response.body());
-                            Toast.makeText(context, "Создан пользователь: " + response.body().getUserId(), Toast.LENGTH_LONG).show();
+                            Log.i("OfferListManager", "createUser: onResponse");
                         } else {
-                            Toast.makeText(context, "Не удалось создать пользователя", Toast.LENGTH_LONG).show();
+                            Log.w("OfferListManager", "createUser: onResponse null");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(context, "Не удалось создать пользователя", Toast.LENGTH_LONG).show();
+                        Log.w("OfferListManager", "createUser: onFailure");
                     }
                 });
     }

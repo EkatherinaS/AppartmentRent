@@ -13,10 +13,8 @@ import retrofit2.http.Query;
 
 public interface FavoriteApi {
 
-
     @GET("/favorite/get-all")
     Call<List<Offer>> getAllOffers();
-
 
     @GET("/favorite/get-by-user")
     Call<List<Offer>> getFavoriteByUser(@Query("user_id") int userId);
@@ -26,6 +24,5 @@ public interface FavoriteApi {
 
     @POST("/favorite/delete")
     Call<Favorite> delete(@Body Favorite favorite);
-
 
 }

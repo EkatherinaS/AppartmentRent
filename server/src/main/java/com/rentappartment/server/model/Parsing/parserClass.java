@@ -91,14 +91,18 @@ public abstract class parserClass {
 
     //Gets a jsoup Document from URL when clicking buttons is required
     protected Document documentFromUrl(String url, ArrayList<String> xpaths) {
-        applicationContext.getBean(WebDriver.class).get(url);
+        try {
+            applicationContext.getBean(WebDriver.class).get(url);
+        } catch (Exception e) {
+            parserLogger.error("Unable to get url: " + url + ": " + e.getMessage());
+        }
         for (String xpath : xpaths) {
             try {
                 JavascriptExecutor jse = (JavascriptExecutor)applicationContext.getBean(WebDriver.class);
                 jse.executeScript("window.scrollBy(0,-document.body.scrollHeight)");
                 WebElement button =
-                    (new WebDriverWait(applicationContext.getBean(WebDriver.class), Duration.ofSeconds(5)))
-                            .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+                        (new WebDriverWait(applicationContext.getBean(WebDriver.class), Duration.ofSeconds(5)))
+                                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
                 button.click();
             }
             catch (Exception exception) {
