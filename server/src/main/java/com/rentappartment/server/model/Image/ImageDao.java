@@ -33,7 +33,7 @@ public class ImageDao {
         repository.deleteAll();
     }
 
-    public Image findById(String id) {
+    public Image findById(int id) {
         return repository.findById(id).orElse(null);
     }
 

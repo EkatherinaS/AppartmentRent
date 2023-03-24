@@ -1,5 +1,6 @@
 package com.rentappartment.server.model.Contact;
 
+import com.rentappartment.server.model.Address.Address;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,5 +28,13 @@ public class Contact {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    @Override
+    public boolean equals(Object object) {
+        Contact a = (Contact) object;
+        if (this.name.equals(a.name) && this.phoneNumber.equals(a.phoneNumber)) {
+            return true;
+        }
+        return false;
     }
 }

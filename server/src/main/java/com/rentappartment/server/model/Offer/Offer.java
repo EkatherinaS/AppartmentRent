@@ -2,9 +2,11 @@ package com.rentappartment.server.model.Offer;
 
 import com.rentappartment.server.model.Address.Address;
 import com.rentappartment.server.model.Contact.Contact;
+import com.rentappartment.server.model.Filter.Filter;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "\"Offer\"")
@@ -41,11 +43,11 @@ public class Offer {
     @Column(name = "date_updated")
     private Date dateUpdated;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "contact", nullable = false)
     private Contact contact;
 
@@ -143,5 +145,20 @@ public class Offer {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Offer a = (Offer) object;
+        return Objects.equals(this.area, a.area) &&
+                Objects.equals(this.type, a.type) &&
+                Objects.equals(this.kitchenArea, a.kitchenArea) &&
+                Objects.equals(this.floor, a.floor) &&
+                Objects.equals(this.mainImage, a.mainImage) &&
+                Objects.equals(this.fullDescription, a.fullDescription) &&
+                Objects.equals(this.roomNumber, a.roomNumber) &&
+                Objects.equals(this.price, a.price) &&
+                this.address == a.address &&
+                this.contact == a.contact;
     }
 }

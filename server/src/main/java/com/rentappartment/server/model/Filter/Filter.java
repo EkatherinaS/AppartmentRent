@@ -1,5 +1,6 @@
 package com.rentappartment.server.model.Filter;
 
+import com.rentappartment.server.model.Contact.Contact;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -51,5 +52,10 @@ public class Filter implements Comparable<Filter> {
     @Override
     public int compareTo(Filter f) {
         return Integer.compare(getPriority(), f.getPriority());
+    }
+    @Override
+    public boolean equals(Object object) {
+        Filter a = (Filter) object;
+        return this.name.equals(a.getName()) && this.priority == a.priority && this.sortAscending == a.sortAscending;
     }
 }

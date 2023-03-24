@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 @SpringBootApplication
 public class ServerApplication {
 

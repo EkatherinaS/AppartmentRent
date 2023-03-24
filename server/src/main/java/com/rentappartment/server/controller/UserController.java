@@ -23,7 +23,6 @@ public class UserController {
         return list;
     }
 
-
     @GetMapping("/user/check")
     public User checkUser(@RequestParam(name="user_id") int userId) {
         User user = userDao.findById(userId);

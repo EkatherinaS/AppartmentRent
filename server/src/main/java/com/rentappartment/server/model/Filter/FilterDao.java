@@ -31,8 +31,8 @@ public class FilterDao {
         repository.deleteAll();
     }
 
-    public Filter findById(int id) {
-        return repository.findById(id).orElse(null);
+    public Filter findById(String name) {
+        return repository.findById(name).orElse(null);
     }
 
     public void updateFilters() {

@@ -1,5 +1,6 @@
 package com.rentappartment.server.model.User;
 
+import com.rentappartment.server.model.Filter.Filter;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,8 +15,10 @@ public class User {
     return userId;
   }
 
-  public void setUserId(int userId) {
-    this.userId = userId;
+  @Override
+  public boolean equals(Object object) {
+    User a = (User) object;
+    return this.userId == a.userId;
   }
 
 }
